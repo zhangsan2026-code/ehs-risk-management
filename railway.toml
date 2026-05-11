@@ -1,8 +1,9 @@
 [build]
 builder = "nixpacks"
+buildCommand = "pip install -r requirements.txt"
 
 [deploy]
-startCommand = "gunicorn --workers=4 --threads=4 --bind 0.0.0.0:8000 wsgi:app"
+startCommand = "python -m gunicorn --workers=4 --threads=4 --bind 0.0.0.0:8000 wsgi:app"
 
 [env]
 PORT = "8000"
