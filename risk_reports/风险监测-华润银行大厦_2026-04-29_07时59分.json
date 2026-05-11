@@ -1,0 +1,173 @@
+{
+  "timestamp": "2026-04-29T07:59:33.277474",
+  "location": "珠海市高新区金业南路",
+  "current_score": 0.0,
+  "predicted_score": 4.5,
+  "risk_level": {
+    "level": 0,
+    "label": "安全",
+    "color": "[安全]",
+    "threshold": 20
+  },
+  "components": {
+    "weather": {
+      "status": "success",
+      "source": "Open-Meteo (真实API)",
+      "current_temp": 22.5,
+      "weather": "阴天",
+      "weather_code": 3,
+      "wind_speed": 7.4,
+      "severe_alerts": [],
+      "risk_score": 0,
+      "hourly_forecasts": [
+        {
+          "hour": "08:00",
+          "weather": "雷阵雨",
+          "temp": 23.3,
+          "wind": 8.4,
+          "precip": 33,
+          "severe_alerts": [],
+          "risk_score": 0
+        },
+        {
+          "hour": "09:00",
+          "weather": "雷阵中雨",
+          "temp": 23.0,
+          "wind": 9.9,
+          "precip": 47,
+          "severe_alerts": [],
+          "risk_score": 0
+        },
+        {
+          "hour": "10:00",
+          "weather": "小雨",
+          "temp": 23.0,
+          "wind": 10.1,
+          "precip": 55,
+          "severe_alerts": [],
+          "risk_score": 0
+        },
+        {
+          "hour": "11:00",
+          "weather": "阵雨",
+          "temp": 22.1,
+          "wind": 7.7,
+          "precip": 54,
+          "severe_alerts": [],
+          "risk_score": 0
+        },
+        {
+          "hour": "12:00",
+          "weather": "小雨",
+          "temp": 22.2,
+          "wind": 5.1,
+          "precip": 48,
+          "severe_alerts": [],
+          "risk_score": 0
+        },
+        {
+          "hour": "13:00",
+          "weather": "晴",
+          "temp": 22.7,
+          "wind": 5.0,
+          "precip": 41,
+          "severe_alerts": [],
+          "risk_score": 0
+        },
+        {
+          "hour": "14:00",
+          "weather": "阴天",
+          "temp": 22.4,
+          "wind": 8.8,
+          "precip": 32,
+          "severe_alerts": [],
+          "risk_score": 0
+        },
+        {
+          "hour": "15:00",
+          "weather": "阴天",
+          "temp": 23.1,
+          "wind": 9.6,
+          "precip": 22,
+          "severe_alerts": [],
+          "risk_score": 0
+        },
+        {
+          "hour": "16:00",
+          "weather": "雷阵雨",
+          "temp": 22.3,
+          "wind": 6.8,
+          "precip": 22,
+          "severe_alerts": [],
+          "risk_score": 0
+        },
+        {
+          "hour": "17:00",
+          "weather": "小雨",
+          "temp": 24.0,
+          "wind": 16.0,
+          "precip": 39,
+          "severe_alerts": [],
+          "risk_score": 0
+        },
+        {
+          "hour": "18:00",
+          "weather": "阴天",
+          "temp": 25.8,
+          "wind": 13.1,
+          "precip": 66,
+          "severe_alerts": [],
+          "risk_score": 0
+        },
+        {
+          "hour": "19:00",
+          "weather": "小雨",
+          "temp": 27.5,
+          "wind": 12.2,
+          "precip": 86,
+          "severe_alerts": [
+            "强降水: 86%"
+          ],
+          "risk_score": 15
+        }
+      ]
+    },
+    "social_media": {
+      "status": "error",
+      "message": "",
+      "source": "NewsAPI",
+      "risk_score": 0
+    },
+    "security": {
+      "status": "error",
+      "message": "",
+      "source": "NewsAPI",
+      "risk_score": 0
+    },
+    "traffic": {
+      "status": "error",
+      "message": "INVALID_USER_KEY",
+      "source": "高德地图",
+      "risk_score": 0
+    }
+  },
+  "prediction": {
+    "prediction": "中等风险",
+    "peak_risk": 15,
+    "peak_time": "19:00",
+    "warnings": [
+      "19:00: 强降水: 86%"
+    ],
+    "hours_ahead": 12
+  },
+  "api_status": {
+    "weather": "success",
+    "newsapi": "error: ",
+    "security": "error: "
+  },
+  "recommendations": [
+    "[预测预警] 未来12小时有风险",
+    "  19:00: 强降水: 86%",
+    "[安全] 当前及预测未来风险较低，安全状况良好"
+  ]
+}

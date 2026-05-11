@@ -1,0 +1,273 @@
+{
+  "timestamp": "2026-04-30T08:58:28.549363",
+  "location": "珠海市高新区金业南路",
+  "current_score": 6.3,
+  "predicted_score": 10.8,
+  "risk_level": {
+    "level": 0,
+    "label": "安全",
+    "color": "Color(0,.501961,0,1)",
+    "bg_color": "Color(.8,.95,.8,1)",
+    "threshold": 20
+  },
+  "components": {
+    "weather": {
+      "status": "success",
+      "source": "Open-Meteo",
+      "current_temp": 20.4,
+      "weather": "阴天",
+      "weather_code": 3,
+      "wind_speed": 18.5,
+      "severe_alerts": [],
+      "risk_score": 0,
+      "hourly_forecasts": [
+        {
+          "hour": "08:00",
+          "weather": "阴天",
+          "temp": 21.6,
+          "wind": 19.8,
+          "precip": 1,
+          "severe_alerts": [],
+          "risk_score": 0
+        },
+        {
+          "hour": "09:00",
+          "weather": "阴天",
+          "temp": 21.1,
+          "wind": 20.4,
+          "precip": 0,
+          "severe_alerts": [
+            "大风: 20.4km/h"
+          ],
+          "risk_score": 15
+        },
+        {
+          "hour": "10:00",
+          "weather": "阴天",
+          "temp": 21.1,
+          "wind": 18.6,
+          "precip": 0,
+          "severe_alerts": [],
+          "risk_score": 0
+        },
+        {
+          "hour": "11:00",
+          "weather": "阴天",
+          "temp": 20.2,
+          "wind": 18.0,
+          "precip": 0,
+          "severe_alerts": [],
+          "risk_score": 0
+        },
+        {
+          "hour": "12:00",
+          "weather": "阴天",
+          "temp": 20.0,
+          "wind": 16.4,
+          "precip": 0,
+          "severe_alerts": [],
+          "risk_score": 0
+        },
+        {
+          "hour": "13:00",
+          "weather": "阴天",
+          "temp": 19.5,
+          "wind": 17.8,
+          "precip": 0,
+          "severe_alerts": [],
+          "risk_score": 0
+        },
+        {
+          "hour": "14:00",
+          "weather": "阴天",
+          "temp": 19.0,
+          "wind": 16.9,
+          "precip": 0,
+          "severe_alerts": [],
+          "risk_score": 0
+        },
+        {
+          "hour": "15:00",
+          "weather": "阴天",
+          "temp": 18.9,
+          "wind": 15.5,
+          "precip": 0,
+          "severe_alerts": [],
+          "risk_score": 0
+        },
+        {
+          "hour": "16:00",
+          "weather": "阴天",
+          "temp": 19.8,
+          "wind": 17.1,
+          "precip": 0,
+          "severe_alerts": [],
+          "risk_score": 0
+        },
+        {
+          "hour": "17:00",
+          "weather": "阴天",
+          "temp": 20.5,
+          "wind": 18.7,
+          "precip": 0,
+          "severe_alerts": [],
+          "risk_score": 0
+        },
+        {
+          "hour": "18:00",
+          "weather": "阴天",
+          "temp": 21.4,
+          "wind": 19.1,
+          "precip": 0,
+          "severe_alerts": [],
+          "risk_score": 0
+        },
+        {
+          "hour": "19:00",
+          "weather": "阴天",
+          "temp": 22.2,
+          "wind": 17.8,
+          "precip": 0,
+          "severe_alerts": [],
+          "risk_score": 0
+        }
+      ]
+    },
+    "social_media": {
+      "status": "success",
+      "source": "模拟数据",
+      "total_posts": 25,
+      "risk_posts": 3,
+      "negative_posts": 2,
+      "sentiment_score": 0.72,
+      "sentiment_label": "正面",
+      "risk_score": 13,
+      "article_details": [
+        {
+          "title": "珠海华润银行发布年度业绩报告，净利润同比增长15%",
+          "source": "财经新闻网",
+          "url": "#",
+          "risk_type": "风险"
+        },
+        {
+          "title": "监管部门对珠海部分银行进行合规检查",
+          "source": "金融时报",
+          "url": "#",
+          "risk_type": "风险"
+        },
+        {
+          "title": "市民投诉某银行服务态度问题",
+          "source": "本地新闻",
+          "url": "#",
+          "risk_type": "负面"
+        },
+        {
+          "title": "珠海高新区金融产业发展迅速，多家银行入驻",
+          "source": "经济日报",
+          "url": "#",
+          "risk_type": "风险"
+        },
+        {
+          "title": "银行理财产品收益下降引发投资者不满",
+          "source": "证券时报",
+          "url": "#",
+          "risk_type": "负面"
+        }
+      ],
+      "updated_at": "2026-04-30 08:57:56",
+      "note": "数据来自模拟，配置NewsAPI密钥后获取真实数据"
+    },
+    "security": {
+      "status": "success",
+      "source": "模拟数据",
+      "district": "高新区",
+      "overall_safety": "良好",
+      "total_incidents": 3,
+      "violent_count": 0,
+      "theft_count": 1,
+      "fraud_count": 2,
+      "fire_count": 0,
+      "traffic_count": 0,
+      "incident_details": [
+        {
+          "title": "高新区某小区发生入室盗窃案件",
+          "source": "珠海公安",
+          "incident_types": [
+            "盗窃"
+          ],
+          "severity": "一般"
+        },
+        {
+          "title": "市民遭遇网络诈骗，损失金额较大",
+          "source": "警方通报",
+          "incident_types": [
+            "诈骗"
+          ],
+          "severity": "一般"
+        },
+        {
+          "title": "警惕！新型电信诈骗手段出现",
+          "source": "反诈中心",
+          "incident_types": [
+            "诈骗"
+          ],
+          "severity": "一般"
+        }
+      ],
+      "risk_score": 9,
+      "updated_at": "2026-04-30 08:58:12",
+      "note": "数据来自模拟，配置NewsAPI密钥后获取真实数据"
+    },
+    "traffic": {
+      "status": "success",
+      "source": "高德地图",
+      "congestion_level": "畅通",
+      "risk_score": 0
+    },
+    "fire": {
+      "status": "success",
+      "source": "模拟数据",
+      "fire_status": "安全",
+      "fire_count": 0,
+      "hazard_count": 1,
+      "fire_details": [
+        {
+          "title": "高新区开展消防安全隐患排查",
+          "source": "珠海消防",
+          "type": "隐患排查",
+          "severity": "一般"
+        },
+        {
+          "title": "春季防火安全提醒",
+          "source": "消防部门",
+          "type": "隐患排查",
+          "severity": "一般"
+        }
+      ],
+      "risk_score": 5,
+      "updated_at": "2026-04-30 08:58:28",
+      "note": "数据来自模拟，配置NewsAPI密钥后获取真实数据"
+    }
+  },
+  "prediction": {
+    "prediction": "中等风险",
+    "peak_risk": 15,
+    "peak_time": "09:00",
+    "warnings": [
+      "09:00: 大风: 20.4km/h"
+    ],
+    "hours_ahead": 12
+  },
+  "api_status": {
+    "weather": "success",
+    "newsapi": "error: ",
+    "security": "error: ",
+    "amap": "success",
+    "fire": "error: "
+  },
+  "recommendations": [
+    "[预测预警] 未来12小时有风险",
+    "  09:00: 大风: 20.4km/h",
+    "[安全] 当前及预测未来风险较低，安全状况良好"
+  ]
+}

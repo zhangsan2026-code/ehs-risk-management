@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>添加风险记录</title>
+    <style>
+        :root {
+            --primary-color: #1e40af;
+            --primary-light: #3b82f6;
+            --primary-dark: #1e3a8a;
+            --secondary-color: #64748b;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --info-color: #06b6d4;
+            --bg-color: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        
+        .header { 
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white; 
+            padding: 1.25rem 2rem; 
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header h1 { 
+            font-size: 1.5rem; 
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .header h1 svg {
+            width: 28px;
+            height: 28px;
+        }
+        
+        .nav { 
+            display: flex; 
+            gap: 0.25rem; 
+        }
+        
+        .nav a { 
+            color: rgba(255, 255, 255, 0.9); 
+            text-decoration: none; 
+            padding: 0.5rem 1rem; 
+            border-radius: 6px; 
+            transition: all 0.2s ease;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .nav a:hover { 
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+        }
+        
+        .container { 
+            max-width: 700px; 
+            margin: 2rem auto; 
+            padding: 0 1rem; 
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-primary { 
+            background: var(--primary-color); 
+            color: white; 
+        }
+        
+        .btn-primary:hover { 
+            background: var(--primary-dark);
+        }
+        
+        .btn-secondary { 
+            background: var(--bg-color); 
+            color: var(--text-primary); 
+        }
+        
+        .btn-secondary:hover { 
+            background: var(--border-color); 
+        }
+        
+        .card { 
+            background: var(--card-bg); 
+            border-radius: 12px; 
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); 
+            overflow: hidden; 
+        }
+        
+        .card-header { 
+            padding: 1.5rem; 
+            border-bottom: 1px solid var(--border-color); 
+        }
+        
+        .card-header h2 { 
+            color: var(--text-primary); 
+            font-size: 1.125rem;
+        }
+        
+        .card-body { 
+            padding: 1.5rem; 
+        }
+        
+        .form-group { 
+            margin-bottom: 1.25rem; 
+        }
+        
+        .form-group label { 
+            display: block; 
+            margin-bottom: 0.5rem; 
+            color: var(--text-primary); 
+            font-weight: 500; 
+        }
+        
+        .form-group label .required { 
+            color: var(--danger-color); 
+        }
+        
+        .form-group input, .form-group select, .form-group textarea { 
+            width: 100%; 
+            padding: 0.75rem; 
+            border: 1px solid var(--border-color); 
+            border-radius: 6px; 
+            font-family: inherit; 
+            font-size: 1rem;
+        }
+        
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        .form-group textarea { 
+            resize: vertical; 
+            min-height: 100px; 
+        }
+        
+        .form-row { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 1rem; 
+        }
+        
+        .action-bar { 
+            display: flex; 
+            gap: 0.75rem; 
+            justify-content: flex-end; 
+            margin-top: 1.5rem; 
+        }
+        
+        .photo-container {
+            margin-top: 0.5rem;
+        }
+        
+        .photo-upload-btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.2s ease;
+            border: none;
+        }
+        
+        .photo-upload-btn:hover {
+            background: var(--primary-dark);
+        }
+        
+        #photosInput {
+            display: none;
+        }
+        
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .preview-item {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 6px;
+            overflow: hidden;
+            background: var(--bg-color);
+        }
+        
+        .preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .preview-item .remove-btn {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 20px;
+            height: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .upload-hint {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+        
+        .photo-count {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <h1>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 12l2 2 4-4"/>
+                    <circle cx="12" cy="12" r="10"/>
+                </svg>
+                EHS风险排查台账系统
+            </h1>
+            <div class="nav">
+                <a href="/dashboard">仪表盘</a>
+                <a href="/risk/list" class="active">风险台账</a>
+                <a href="/notifications">通知</a>
+                <a href="/extension/approve">审批管理</a>
+                <a href="/audit/list">整改审核</a>
+                <a href="/ehs/list">EHS标准库</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <a href="/risk/list" class="btn btn-secondary" style="margin-bottom: 1.5rem;">← 返回列表</a>
+        
+        <div class="card">
+            <div class="card-header">
+                <h2>添加风险记录</h2>
+            </div>
+            
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data" id="riskForm">
+                    <div class="form-group">
+                        <label>风险标题 <span class="required">*</span></label>
+                        <input type="text" name="title" required placeholder="请输入风险标题">
+                    </div>
+
+                    <div class="form-group">
+                        <label>风险描述 <span class="required">*</span></label>
+                        <textarea name="description" required placeholder="请详细描述风险情况..."></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>风险分类 <span class="required">*</span></label>
+                            <select name="category" required>
+                                <option value="">请选择分类</option>
+                                {% for category in categories %}
+                                <option value="{{ category }}">{{ category }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>风险等级 <span class="required">*</span></label>
+                            <select name="level" required>
+                                <option value="">请选择等级</option>
+                                {% for level in levels %}
+                                <option value="{{ level }}">{{ level }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>发现位置</label>
+                            <input type="text" name="location" placeholder="如：15楼会议室">
+                        </div>
+
+                        <div class="form-group">
+                            <label>发现人</label>
+                            <input type="text" name="discovered_by" placeholder="请输入发现人姓名">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>关联EHS标准</label>
+                            <select name="ehs_standard">
+                                <option value="">请选择（可选）</option>
+                                {% for standard in ehs_standards %}
+                                <option value="{{ standard.code }} - {{ standard.title }}">{{ standard.code }} - {{ standard.title }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>优先级</label>
+                            <select name="priority">
+                                <option value="1">P1 - 紧急</option>
+                                <option value="2">P2 - 高</option>
+                                <option value="3" selected>P3 - 中</option>
+                                <option value="4">P4 - 低</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>整改部门</label>
+                            <input type="text" name="corrective_dept" placeholder="如：运维部">
+                        </div>
+
+                        <div class="form-group">
+                            <label>整改人</label>
+                            <input type="text" name="corrective_by" placeholder="请输入整改人姓名">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>现场照片</label>
+                        <div class="photo-container">
+                            <button type="button" class="photo-upload-btn" onclick="document.getElementById('photosInput').click();">📷 选择照片</button>
+                            <input type="file" name="photos" id="photosInput" multiple accept="image/*" onchange="handleFileSelect(event);">
+                            <div id="previewGrid" class="preview-grid"></div>
+                            <div class="upload-hint">支持 PNG、JPG、JPEG、GIF 格式，最多上传5张</div>
+                            <div id="photoCount" class="photo-count">已选择 0/5 张照片</div>
+                        </div>
+                    </div>
+
+                    <div class="action-bar">
+                        <button type="button" class="btn btn-secondary" onclick="window.location.href='/risk/list'">取消</button>
+                        <button type="submit" class="btn btn-primary">提交</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const maxPhotos = 5;
+        const selectedFiles = [];
+        
+        function handleFileSelect(event) {
+            const files = event.target.files;
+            const previewGrid = document.getElementById('previewGrid');
+            const photoCount = document.getElementById('photoCount');
+            
+            for (let i = 0; i < files.length; i++) {
+                if (selectedFiles.length >= maxPhotos) break;
+                
+                const file = files[i];
+                if (file.type.startsWith('image/')) {
+                    selectedFiles.push(file);
+                    
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const previewItem = document.createElement('div');
+                        previewItem.className = 'preview-item';
+                        previewItem.dataset.index = selectedFiles.length - 1;
+                        previewItem.innerHTML = `
+                            <img src="${e.target.result}" alt="预览">
+                            <button class="remove-btn" onclick="removePhoto(this)">×</button>
+                        `;
+                        previewGrid.appendChild(previewItem);
+                        updateCount();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+            
+            event.target.value = '';
+        }
+        
+        function removePhoto(btn) {
+            const previewItem = btn.parentElement;
+            const index = parseInt(previewItem.dataset.index);
+            selectedFiles.splice(index, 1);
+            previewItem.remove();
+            
+            const items = document.querySelectorAll('.preview-item');
+            items.forEach((item, i) => {
+                item.dataset.index = i;
+            });
+            
+            updateCount();
+        }
+        
+        function updateCount() {
+            const photoCount = document.getElementById('photoCount');
+            photoCount.textContent = `已选择 ${selectedFiles.length}/${maxPhotos} 张照片`;
+        }
+        
+        document.getElementById('riskForm').addEventListener('submit', function(e) {
+            const dataTransfer = new DataTransfer();
+            selectedFiles.forEach(file => {
+                dataTransfer.items.add(file);
+            });
+            document.getElementById('photosInput').files = dataTransfer.files;
+        });
+        
+        document.addEventListener('paste', function(e) {
+            const items = e.clipboardData.items;
+            if (items) {
+                for (let i = 0; i < items.length; i++) {
+                    if (items[i].type.startsWith('image/')) {
+                        const file = items[i].getAsFile();
+                        if (file && selectedFiles.length < maxPhotos) {
+                            selectedFiles.push(file);
+                            
+                            const reader = new FileReader();
+                            reader.onload = function(e) {
+                                const previewGrid = document.getElementById('previewGrid');
+                                const previewItem = document.createElement('div');
+                                previewItem.className = 'preview-item';
+                                previewItem.dataset.index = selectedFiles.length - 1;
+                                previewItem.innerHTML = `
+                                    <img src="${e.target.result}" alt="预览">
+                                    <button class="remove-btn" onclick="removePhoto(this)">×</button>
+                                `;
+                                previewGrid.appendChild(previewItem);
+                                updateCount();
+                            };
+                            reader.readAsDataURL(file);
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

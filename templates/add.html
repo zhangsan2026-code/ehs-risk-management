@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>添加加班记录</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 20px; max-width: 500px; margin: 0 auto; }
+        h1 { margin-bottom: 20px; }
+        form { display: flex; flex-direction: column; gap: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: 500; }
+        input, textarea { width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; }
+        textarea { resize: vertical; min-height: 80px; }
+        .btn { padding: 12px; background: #10b981; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; text-decoration: none; text-align: center; }
+        .btn:hover { background: #059669; }
+        .btn-cancel { background: #6b7280; }
+        .btn-cancel:hover { background: #4b5563; }
+        .btn-group { display: flex; gap: 10px; }
+        .back-link { color: #3b82f6; text-decoration: none; margin-bottom: 10px; display: inline-block; }
+    </style>
+</head>
+<body>
+    <a href="/" class="back-link">← 返回列表</a>
+    <h1>添加加班记录</h1>
+    <form method="post">
+        <div>
+            <label>日期 *</label>
+            <input type="date" name="date" required>
+        </div>
+        <div>
+            <label>加班楼层</label>
+            <input type="text" name="floor" placeholder="如：21楼">
+        </div>
+        <div>
+            <label>加班部门</label>
+            <input type="text" name="department" placeholder="如：个人信贷部、2133开放式办公区">
+        </div>
+        <div>
+            <label>加班人员</label>
+            <input type="text" name="person" placeholder="如：李琼（非必填，区域加班可留空）">
+        </div>
+        <div>
+            <label>预计加班时间</label>
+            <input type="text" name="time" placeholder="如：18:00-20:00" value="18:00-20:00">
+        </div>
+        <div>
+            <label>值班人员</label>
+            <input type="text" name="on_duty" placeholder="如：李明">
+        </div>
+        <div>
+            <label>备注</label>
+            <textarea name="notes" placeholder="额外要求或注意事项"></textarea>
+        </div>
+        <div class="btn-group">
+            <button type="submit" class="btn">保存</button>
+            <a href="/" class="btn btn-cancel">取消</a>
+        </div>
+    </form>
+</body>
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>创建数字人格 - 前任 Skill</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Microsoft YaHei', sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #333;
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        h2 {
+            color: #555;
+            font-size: 1.2rem;
+            margin: 25px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #444;
+            font-weight: 500;
+        }
+        input[type="text"], textarea, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        input[type="text"]:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        textarea {
+            height: 150px;
+            resize: vertical;
+        }
+        .option-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+        }
+        .option-item {
+            padding: 12px;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .option-item:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+        .option-item.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        .memory-entry {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .memory-entry select, .memory-entry input {
+            flex: 1;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+        .btn-secondary {
+            background: #eee;
+            color: #666;
+        }
+        .btn-secondary:hover {
+            background: #ddd;
+        }
+        .form-actions {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .hint {
+            font-size: 0.85rem;
+            color: #888;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>✨ 创建数字人格</h1>
+            
+            <form method="POST">
+                <h2>基本信息</h2>
+                <div class="form-group">
+                    <label>名字</label>
+                    <input type="text" name="name" required placeholder="输入TA的名字">
+                </div>
+                
+                <h2>性格类型</h2>
+                <div class="option-grid" id="personality_grid">
+                    {% for key, value in personalities.items() %}
+                    <div class="option-item" data-value="{{ key }}" onclick="selectOption(this, 'personality_input')">
+                        <div>{{ key }}</div>
+                        <div style="font-size: 0.8rem; opacity: 0.7; margin-top: 5px;">{{ value.description }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <input type="hidden" name="personality" id="personality_input" required>
+                
+                <h2>依恋类型</h2>
+                <div class="option-grid" id="attachment_grid">
+                    {% for key, value in attachments.items() %}
+                    <div class="option-item" data-value="{{ key }}" onclick="selectOption(this, 'attachment_input')">
+                        <div>{{ key }}</div>
+                        <div style="font-size: 0.8rem; opacity: 0.7; margin-top: 5px;">{{ value.description }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <input type="hidden" name="attachment" id="attachment_input" required>
+                
+                <h2>吵架模式</h2>
+                <div class="option-grid" id="fighting_grid">
+                    {% for key, value in fightings.items() %}
+                    <div class="option-item" data-value="{{ key }}" onclick="selectOption(this, 'fighting_input')">
+                        <div>{{ key }}</div>
+                        <div style="font-size: 0.8rem; opacity: 0.7; margin-top: 5px;">{{ value.description }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <input type="hidden" name="fighting" id="fighting_input" required>
+                
+                <h2>回忆记忆库</h2>
+                <div class="hint">添加你们的专属回忆，TA会记得这些</div>
+                {% for i in range(1, 6) %}
+                <div class="memory-entry">
+                    <select name="memory_tag_{{ i }}">
+                        <option value="">选择类型</option>
+                        {% for tag in memory_tags %}
+                        <option value="{{ tag }}">{{ tag }}</option>
+                        {% endfor %}
+                    </select>
+                    <input type="text" name="memory_content_{{ i }}" placeholder="输入回忆内容">
+                </div>
+                {% endfor %}
+                
+                <h2>聊天记录（可选）</h2>
+                <div class="hint">格式：名字: 内容</div>
+                <textarea name="chat_history" placeholder="例如：
+张三: 今天天气真好
+李四: 是啊，想去公园走走"></textarea>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary" onclick="return validateForm()">创建</button>
+                    <a href="/" class="btn btn-secondary">取消</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        function selectOption(el, inputId) {
+            el.parentElement.querySelectorAll('.option-item').forEach(item => item.classList.remove('selected'));
+            el.classList.add('selected');
+            document.getElementById(inputId).value = el.dataset.value;
+        }
+        
+        function validateForm() {
+            const name = document.querySelector('input[name="name"]').value;
+            const personality = document.getElementById('personality_input').value;
+            const attachment = document.getElementById('attachment_input').value;
+            const fighting = document.getElementById('fighting_input').value;
+            
+            if (!name.trim()) {
+                alert('请输入名字');
+                return false;
+            }
+            if (!personality) {
+                alert('请选择性格类型');
+                return false;
+            }
+            if (!attachment) {
+                alert('请选择依恋类型');
+                return false;
+            }
+            if (!fighting) {
+                alert('请选择吵架模式');
+                return false;
+            }
+            return true;
+        }
+    </script>
+</body>
+</html>

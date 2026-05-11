@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>添加EHS标准</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: #f5f7fa; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 1rem 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header h1 { font-size: 1.5rem; }
+        .nav { display: flex; gap: 1rem; margin-top: 0.5rem; }
+        .nav a { color: rgba(255,255,255,0.9); text-decoration: none; padding: 0.5rem 1rem; border-radius: 4px; transition: background 0.3s; }
+        .nav a:hover { background: rgba(255,255,255,0.2); }
+        .container { max-width: 700px; margin: 2rem auto; padding: 0 1rem; }
+        .btn { display: inline-block; padding: 0.5rem 1rem; border-radius: 6px; text-decoration: none; font-weight: 500; transition: all 0.3s; }
+        .btn-primary { background: #667eea; color: white; }
+        .btn-primary:hover { background: #5a67d8; }
+        .btn-secondary { background: #f3f4f6; color: #374151; }
+        .btn-secondary:hover { background: #e5e7eb; }
+        .card { background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); overflow: hidden; }
+        .card-header { padding: 1.5rem; border-bottom: 1px solid #e5e7eb; }
+        .card-header h2 { color: #333; }
+        .card-body { padding: 1.5rem; }
+        .form-group { margin-bottom: 1.25rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; color: #333; font-weight: 500; }
+        .form-group label .required { color: #ef4444; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.75rem; border: 1px solid #e5e7eb; border-radius: 6px; font-family: inherit; font-size: 1rem; }
+        .form-group textarea { resize: vertical; min-height: 150px; }
+        .form-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+        .action-bar { display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.5rem; }
+        .hint { font-size: 0.85rem; color: #666; margin-top: 0.25rem; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🔒 风险排查台账系统</h1>
+        <div class="nav">
+            <a href="/dashboard">仪表盘</a>
+            <a href="/risk/list">风险台账</a>
+            <a href="/ehs/list">EHS标准库</a>
+
+        </div>
+    </div>
+
+    <div class="container">
+        <a href="/ehs/list" class="btn btn-secondary" style="margin-bottom: 1.5rem;">← 返回列表</a>
+        
+        <div class="card">
+            <div class="card-header">
+                <h2>添加EHS标准</h2>
+            </div>
+            
+            <div class="card-body">
+                <form method="post">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>标准编号 <span class="required">*</span></label>
+                            <input type="text" name="code" required placeholder="如：EHS-F-001">
+                        </div>
+
+                        <div class="form-group">
+                            <label>版本号</label>
+                            <input type="text" name="version" value="1.0" placeholder="如：1.0">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>标准名称 <span class="required">*</span></label>
+                        <input type="text" name="title" required placeholder="请输入标准名称">
+                    </div>
+
+                    <div class="form-group">
+                        <label>标准分类 <span class="required">*</span></label>
+                        <select name="category" required>
+                            <option value="">请选择分类</option>
+                            {% for category in categories %}
+                            <option value="{{ category }}">{{ category }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>参考标准</label>
+                        <input type="text" name="reference" placeholder="如：GB 25201-2010">
+                    </div>
+
+                    <div class="form-group">
+                        <label>适用区域</label>
+                        <input type="text" name="applicable_areas" placeholder="多个区域用逗号分隔">
+                        <div class="hint">示例：办公区,机房,仓库</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>关键词</label>
+                        <input type="text" name="keywords" placeholder="多个关键词用逗号分隔">
+                        <div class="hint">示例：消防,安全,疏散</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>标准内容 <span class="required">*</span></label>
+                        <textarea name="content" required placeholder="请输入标准内容，每条要求用换行分隔..."></textarea>
+                    </div>
+
+                    <div class="action-bar">
+                        <button type="button" class="btn btn-secondary" onclick="window.location.href='/ehs/list'">取消</button>
+                        <button type="submit" class="btn btn-primary">提交</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

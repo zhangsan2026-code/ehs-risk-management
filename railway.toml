@@ -1,0 +1,9 @@
+[build]
+builder = "python"
+pythonVersion = "3.11"
+
+[deploy]
+startCommand = "gunicorn wsgi:app"
+
+[env]
+PORT = "8000"

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的数字人格 - 前任 Skill</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Microsoft YaHei', sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: white;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        .header p {
+            color: rgba(255,255,255,0.8);
+        }
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+        }
+        .avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+        .card-content {
+            flex: 1;
+        }
+        .card-content h3 {
+            color: #333;
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+        }
+        .card-content .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .tag {
+            padding: 4px 12px;
+            background: #f0f0ff;
+            color: #667eea;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        .card-content .meta {
+            display: flex;
+            gap: 20px;
+            font-size: 0.85rem;
+            color: #888;
+        }
+        .card-actions {
+            display: flex;
+            gap: 10px;
+        }
+        .btn {
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        .btn-primary:hover {
+            transform: scale(1.05);
+        }
+        .btn-danger {
+            background: #ff6b6b;
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #ff5252;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 16px;
+        }
+        .empty-state h2 {
+            color: white;
+            margin-bottom: 15px;
+        }
+        .empty-state p {
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 25px;
+        }
+        .back-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border-radius: 30px;
+            text-decoration: none;
+            margin-top: 20px;
+        }
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💝 我的数字人格</h1>
+            <p>管理你的AI分身列表</p>
+        </div>
+        
+        {% if personas %}
+            {% for persona in personas %}
+            <div class="card">
+                <div class="avatar">💝</div>
+                <div class="card-content">
+                    <h3>{{ persona.name }}</h3>
+                    <div class="tags">
+                        <span class="tag">{{ persona.personality_type }}</span>
+                        <span class="tag">{{ persona.attachment_style }}</span>
+                        <span class="tag">{{ persona.fighting_style }}</span>
+                    </div>
+                    <div class="meta">
+                        <span>记忆: {{ persona.memories | length }} 条</span>
+                        <span>互动: {{ persona.interaction_count }} 次</span>
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <a href="/chat/{{ persona.id }}" class="btn btn-primary">聊天</a>
+                    <button class="btn btn-danger" onclick="deletePersona('{{ persona.id }}')">删除</button>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <h2>暂无数字人格</h2>
+                <p>创建你的第一个AI分身，与过去温柔重逢</p>
+                <a href="/create" class="btn btn-primary">创建数字人格</a>
+            </div>
+        {% endif %}
+        
+        <div style="text-align: center;">
+            <a href="/" class="back-btn">返回首页</a>
+        </div>
+    </div>
+    
+    <script>
+        function deletePersona(id) {
+            if (confirm('确定要删除这个数字人格吗？此操作不可撤销。')) {
+                window.location.href = `/delete/${id}`;
+            }
+        }
+    </script>
+</body>
+</html>

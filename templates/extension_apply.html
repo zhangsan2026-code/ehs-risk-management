@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>申请延期</title>
+    <style>
+        :root {
+            --primary-color: #1e40af;
+            --secondary-color: #64748b;
+            --danger-color: #ef4444;
+            --bg-color: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-primary: #1e293b;
+            --border-color: #e2e8f0;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        
+        .header { 
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1e3a8a 100%);
+            color: white; 
+            padding: 1.25rem 2rem; 
+        }
+        
+        .container { 
+            max-width: 600px; 
+            margin: 2rem auto; 
+            padding: 0 1rem; 
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-primary { 
+            background: var(--primary-color); 
+            color: white; 
+        }
+        
+        .btn-primary:hover { 
+            background: #1e3a8a;
+        }
+        
+        .btn-secondary { 
+            background: var(--bg-color); 
+            color: var(--text-primary); 
+        }
+        
+        .btn-secondary:hover { 
+            background: var(--border-color); 
+        }
+        
+        .card { 
+            background: var(--card-bg); 
+            border-radius: 12px; 
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); 
+            overflow: hidden; 
+        }
+        
+        .card-header { 
+            padding: 1.5rem; 
+            border-bottom: 1px solid var(--border-color); 
+        }
+        
+        .card-header h2 { 
+            color: var(--text-primary); 
+            font-size: 1.125rem;
+        }
+        
+        .card-body { 
+            padding: 1.5rem; 
+        }
+        
+        .form-group { 
+            margin-bottom: 1.25rem; 
+        }
+        
+        .form-group label { 
+            display: block; 
+            margin-bottom: 0.5rem; 
+            color: var(--text-primary); 
+            font-weight: 500; 
+        }
+        
+        .form-group label .required { 
+            color: var(--danger-color); 
+        }
+        
+        .form-group input, .form-group select, .form-group textarea { 
+            width: 100%; 
+            padding: 0.75rem; 
+            border: 1px solid var(--border-color); 
+            border-radius: 6px; 
+            font-family: inherit; 
+            font-size: 1rem;
+        }
+        
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        .form-group textarea { 
+            resize: vertical; 
+            min-height: 100px; 
+        }
+        
+        .action-bar { 
+            display: flex; 
+            gap: 0.75rem; 
+            justify-content: flex-end; 
+            margin-top: 1.5rem; 
+        }
+        
+        .risk-info {
+            background: var(--bg-color);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .risk-info .title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .risk-info .meta {
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+        }
+        
+        .warning {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            padding: 1rem;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📋 EHS风险排查台账系统</h1>
+    </div>
+
+    <div class="container">
+        <a href="/risk/detail/{{ record.id }}" class="btn btn-secondary" style="margin-bottom: 1.5rem;">← 返回风险详情</a>
+        
+        <div class="card">
+            <div class="card-header">
+                <h2>申请延期处理</h2>
+            </div>
+            
+            <div class="card-body">
+                <div class="warning">
+                    <strong>⚠️ 注意</strong>: 申请延期需经过审批，请如实填写延期原因。
+                </div>
+
+                <div class="risk-info">
+                    <div class="title">{{ record.title }}</div>
+                    <div class="meta">
+                        风险编号: {{ record.id }} | 截止日期: {{ record.due_date.strftime('%Y-%m-%d') if record.due_date else '未设定' }}
+                    </div>
+                </div>
+
+                <form method="post">
+                    <div class="form-group">
+                        <label>申请人 <span class="required">*</span></label>
+                        <input type="text" name="requester" required placeholder="请输入您的姓名">
+                    </div>
+
+                    <div class="form-group">
+                        <label>延期天数 <span class="required">*</span></label>
+                        <select name="requested_days" required>
+                            <option value="1">1天</option>
+                            <option value="3" selected>3天</option>
+                            <option value="5">5天</option>
+                            <option value="7">7天</option>
+                            <option value="14">14天</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>延期原因 <span class="required">*</span></label>
+                        <textarea name="reason" required placeholder="请详细说明需要延期的原因..."></textarea>
+                    </div>
+
+                    <div class="action-bar">
+                        <button type="button" class="btn btn-secondary" onclick="window.location.href='/risk/detail/{{ record.id }}'">取消</button>
+                        <button type="submit" class="btn btn-primary">提交申请</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>延期审批管理</title>
+    <style>
+        :root {
+            --primary-color: #1e40af;
+            --secondary-color: #64748b;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --bg-color: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-primary: #1e293b;
+            --border-color: #e2e8f0;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        
+        .header { 
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1e3a8a 100%);
+            color: white; 
+            padding: 1.25rem 2rem; 
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header h1 { 
+            font-size: 1.5rem; 
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .nav { 
+            display: flex; 
+            gap: 0.25rem; 
+        }
+        
+        .nav a { 
+            color: rgba(255, 255, 255, 0.9); 
+            text-decoration: none; 
+            padding: 0.5rem 1rem; 
+            border-radius: 6px; 
+            transition: all 0.2s ease;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .nav a:hover { 
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .nav a.active { 
+            background: rgba(255, 255, 255, 0.25);
+        }
+        
+        .container { 
+            max-width: 1000px; 
+            margin: 2rem auto; 
+            padding: 0 1rem; 
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-primary { 
+            background: var(--primary-color); 
+            color: white; 
+        }
+        
+        .btn-success { 
+            background: var(--success-color); 
+            color: white; 
+        }
+        
+        .btn-danger { 
+            background: var(--danger-color); 
+            color: white; 
+        }
+        
+        .btn-secondary { 
+            background: var(--bg-color); 
+            color: var(--text-primary); 
+        }
+        
+        .card { 
+            background: var(--card-bg); 
+            border-radius: 12px; 
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); 
+            overflow: hidden; 
+            margin-bottom: 1.5rem;
+        }
+        
+        .card-header { 
+            padding: 1rem 1.5rem; 
+            border-bottom: 1px solid var(--border-color); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            background: var(--bg-color);
+        }
+        
+        .card-header h2 { 
+            font-size: 1.1rem; 
+            color: var(--text-primary);
+        }
+        
+        .request-item {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .request-item:last-child {
+            border-bottom: none;
+        }
+        
+        .request-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .request-title {
+            font-weight: 600;
+            font-size: 1.05rem;
+        }
+        
+        .status-badge {
+            padding: 0.375rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .status-pending { background: #fef3c7; color: #d97706; }
+        .status-approved { background: #dcfce7; color: #16a34a; }
+        .status-rejected { background: #fee2e2; color: #ef4444; }
+        
+        .request-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+        }
+        
+        .request-reason {
+            background: var(--bg-color);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        
+        .request-reason label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+        
+        .approval-form {
+            background: var(--bg-color);
+            padding: 1rem;
+            border-radius: 8px;
+        }
+        
+        .approval-form .form-group {
+            margin-bottom: 0.75rem;
+        }
+        
+        .approval-form label {
+            display: block;
+            margin-bottom: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
+        .approval-form input, .approval-form select, .approval-form textarea {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+        
+        .approval-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 4rem;
+            color: var(--secondary-color);
+        }
+        
+        .empty-state .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .badge {
+            background: var(--danger-color);
+            color: white;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 10px;
+            margin-left: 0.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .approval-actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <h1>📋 EHS风险排查台账系统</h1>
+            <div class="nav">
+                <a href="/dashboard">仪表盘</a>
+                <a href="/risk/list">风险台账</a>
+                <a href="/notifications">通知</a>
+                <a href="/extension/approve" class="active">审批管理</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h2>📝 延期审批列表<span class="badge">{{ requests|length }}</span></h2>
+            </div>
+            
+            {% if requests %}
+            {% for req in requests %}
+            <div class="request-item">
+                <div class="request-header">
+                    <span class="request-title">{{ req.risk_title }}</span>
+                    <span class="status-badge status-{{ req.status }}">{{ req.status == 'pending' and '待审批' or req.status == 'approved' and '已批准' or '已驳回' }}</span>
+                </div>
+                
+                <div class="request-info">
+                    <div><strong>风险编号:</strong> {{ req.risk_id }}</div>
+                    <div><strong>申请人:</strong> {{ req.requester }}</div>
+                    <div><strong>申请天数:</strong> {{ req.requested_days }} 天</div>
+                    <div><strong>申请时间:</strong> {{ req.created_at.strftime('%Y-%m-%d %H:%M') }}</div>
+                </div>
+                
+                <div class="request-reason">
+                    <label>延期原因</label>
+                    <div>{{ req.reason }}</div>
+                </div>
+                
+                {% if req.status == 'pending' %}
+                <div class="approval-form">
+                    <form method="post" action="/extension/approve/{{ req.id }}">
+                        <div class="form-group">
+                            <label>审批人</label>
+                            <input type="text" name="approver" required placeholder="请输入您的姓名">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>批准天数（接受申请时填写）</label>
+                            <select name="approved_days">
+                                <option value="1">1天</option>
+                                <option value="3" selected>3天</option>
+                                <option value="5">5天</option>
+                                <option value="7">7天</option>
+                                <option value="14">14天</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>审批备注（可选）</label>
+                            <textarea name="notes" placeholder="请输入审批意见..."></textarea>
+                        </div>
+                        
+                        <div class="approval-actions">
+                            <button type="submit" name="action" value="approve" class="btn btn-success">✓ 批准</button>
+                            <button type="submit" name="action" value="reject" class="btn btn-danger">✗ 驳回</button>
+                        </div>
+                    </form>
+                </div>
+                {% endif %}
+                
+                {% if req.status != 'pending' %}
+                <div style="font-size: 0.875rem; color: var(--secondary-color);">
+                    {% if req.status == 'approved' %}
+                    ✅ 由 {{ req.approved_by }} 批准，延长 {{ req.approved_days }} 天
+                    {% else %}
+                    ❌ 由 {{ req.approved_by }} 驳回
+                    {% endif %}
+                    {% if req.notes %} - {{ req.notes }}{% endif %}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="empty-state">
+                <div class="empty-icon">🎉</div>
+                <p>暂无待审批的延期申请</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

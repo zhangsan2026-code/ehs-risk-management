@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>整改审核列表</title>
+    <style>
+        :root {
+            --primary-color: #1e40af;
+            --secondary-color: #64748b;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --bg-color: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-primary: #1e293b;
+            --border-color: #e2e8f0;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        
+        .header { 
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1e3a8a 100%);
+            color: white; 
+            padding: 1.25rem 2rem; 
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header h1 { 
+            font-size: 1.5rem; 
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .nav { 
+            display: flex; 
+            gap: 0.25rem; 
+        }
+        
+        .nav a { 
+            color: rgba(255, 255, 255, 0.9); 
+            text-decoration: none; 
+            padding: 0.5rem 1rem; 
+            border-radius: 6px; 
+            transition: all 0.2s ease;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .nav a:hover { 
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .nav a.active { 
+            background: rgba(255, 255, 255, 0.25);
+        }
+        
+        .container { 
+            max-width: 1200px; 
+            margin: 2rem auto; 
+            padding: 0 1rem; 
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-primary { 
+            background: var(--primary-color); 
+            color: white; 
+        }
+        
+        .btn-success { 
+            background: var(--success-color); 
+            color: white; 
+        }
+        
+        .btn-danger { 
+            background: var(--danger-color); 
+            color: white; 
+        }
+        
+        .btn-secondary { 
+            background: var(--bg-color); 
+            color: var(--text-primary); 
+        }
+        
+        .card { 
+            background: var(--card-bg); 
+            border-radius: 12px; 
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); 
+            overflow: hidden; 
+            margin-bottom: 1.5rem;
+        }
+        
+        .card-header { 
+            padding: 1rem 1.5rem; 
+            border-bottom: 1px solid var(--border-color); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            background: var(--bg-color);
+        }
+        
+        .card-header h2 { 
+            font-size: 1.1rem; 
+            color: var(--text-primary);
+        }
+        
+        .audit-item {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .audit-item:last-child {
+            border-bottom: none;
+        }
+        
+        .audit-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        
+        .audit-title {
+            font-weight: 600;
+            font-size: 1.05rem;
+        }
+        
+        .audit-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+        }
+        
+        .photos-section {
+            margin-bottom: 1rem;
+        }
+        
+        .photos-section h4 {
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+        
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 0.5rem;
+        }
+        
+        .photo-item {
+            aspect-ratio: 1;
+            border-radius: 6px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .before-label {
+            background: #fee2e2;
+            color: #ef4444;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            margin-right: 0.5rem;
+        }
+        
+        .after-label {
+            background: #dcfce7;
+            color: #16a34a;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+        }
+        
+        .check-items {
+            background: var(--bg-color);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        
+        .check-items h4 {
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+        }
+        
+        .check-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .check-item:last-child {
+            border-bottom: none;
+        }
+        
+        .check-item.completed .check-circle {
+            background: var(--success-color);
+        }
+        
+        .check-circle {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .check-circle::after {
+            content: '✓';
+            color: white;
+            font-size: 10px;
+        }
+        
+        .check-content {
+            flex: 1;
+        }
+        
+        .check-description {
+            font-size: 0.9rem;
+        }
+        
+        .check-meta {
+            font-size: 0.75rem;
+            color: var(--secondary-color);
+        }
+        
+        .audit-form {
+            background: var(--bg-color);
+            padding: 1rem;
+            border-radius: 8px;
+        }
+        
+        .audit-form .form-group {
+            margin-bottom: 0.75rem;
+        }
+        
+        .audit-form label {
+            display: block;
+            margin-bottom: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
+        .audit-form input, .audit-form textarea {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+        
+        .audit-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 4rem;
+            color: var(--secondary-color);
+        }
+        
+        .empty-state .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .badge {
+            background: var(--warning-color);
+            color: white;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 10px;
+            margin-left: 0.5rem;
+        }
+        
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-overlay.show {
+            display: flex;
+        }
+        
+        .modal {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 30px;
+            height: 30px;
+            border: none;
+            background: rgba(0,0,0,0.1);
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: #666;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .audit-header {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .audit-actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <h1>📋 EHS风险排查台账系统</h1>
+            <div class="nav">
+                <a href="/dashboard">仪表盘</a>
+                <a href="/risk/list">风险台账</a>
+                <a href="/notifications">通知</a>
+                <a href="/extension/approve">审批管理</a>
+                <a href="/audit/list" class="active">整改审核</a>
+                <a href="/ehs/list">EHS标准库</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h2>✅ 待审核整改列表<span class="badge">{{ records|length }}</span></h2>
+            </div>
+            
+            {% if records %}
+            {% for record in records %}
+            <div class="audit-item">
+                <div class="audit-header">
+                    <span class="audit-title">{{ record.title }}</span>
+                    <span style="font-size: 0.85rem; color: var(--secondary-color);">
+                        编号: {{ record.id }}
+                    </span>
+                </div>
+                
+                <div class="audit-info">
+                    <div><strong>风险分类:</strong> {{ record.category.value }}</div>
+                    <div><strong>风险等级:</strong> {{ record.level.value }}</div>
+                    <div><strong>发现位置:</strong> {{ record.location or '-' }}</div>
+                    <div><strong>整改部门:</strong> {{ record.corrective_dept or '-' }}</div>
+                    <div><strong>整改人:</strong> {{ record.corrective_by or '-' }}</div>
+                    <div><strong>进度:</strong> {{ record.progress }}%</div>
+                </div>
+                
+                {% if record.before_photos or record.after_photos %}
+                <div class="photos-section">
+                    <h4>
+                        {% if record.before_photos %}<span class="before-label">整改前</span>{% endif %}
+                        {% if record.after_photos %}<span class="after-label">整改后</span>{% endif %}
+                        对比照片
+                    </h4>
+                    <div class="photo-grid">
+                        {% for photo in record.before_photos %}
+                        <div class="photo-item" onclick="showPhoto('/risk/photo/{{ photo }}')">
+                            <img src="/risk/photo/{{ photo }}" alt="整改前">
+                        </div>
+                        {% endfor %}
+                        {% for photo in record.after_photos %}
+                        <div class="photo-item" onclick="showPhoto('/risk/photo/{{ photo }}')">
+                            <img src="/risk/photo/{{ photo }}" alt="整改后">
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if record.check_items %}
+                <div class="check-items">
+                    <h4>✅ 整改检查项</h4>
+                    {% for item in record.check_items %}
+                    <div class="check-item {{ 'completed' if item.completed else '' }}">
+                        <div class="check-circle"></div>
+                        <div class="check-content">
+                            <div class="check-description">{{ item.description }}</div>
+                            {% if item.completed %}
+                            <div class="check-meta">
+                                完成人: {{ item.completed_by }} | {{ item.completed_at[:16] }}
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                
+                <div class="audit-form">
+                    <form method="post" action="/risk/{{ record.id }}/audit">
+                        <div class="form-group">
+                            <label>审核人</label>
+                            <input type="text" name="auditor" required placeholder="请输入您的姓名">
+                        </div>
+                        <div class="form-group">
+                            <label>审核意见（可选）</label>
+                            <textarea name="note" placeholder="请输入审核意见..."></textarea>
+                        </div>
+                        <div class="audit-actions">
+                            <button type="submit" name="approved" value="true" class="btn btn-success">✓ 通过</button>
+                            <button type="submit" name="approved" value="false" class="btn btn-danger">✗ 驳回</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="empty-state">
+                <div class="empty-icon">🎉</div>
+                <p>暂无待审核的整改申请</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div id="photoModal" class="modal-overlay">
+        <button class="modal-close" onclick="hideModal()">×</button>
+        <div class="modal">
+            <img id="modalImage" src="" alt="照片">
+        </div>
+    </div>
+
+    <script>
+        function showPhoto(url) {
+            document.getElementById('modalImage').src = url;
+            document.getElementById('photoModal').classList.add('show');
+        }
+        
+        function hideModal() {
+            document.getElementById('photoModal').classList.remove('show');
+        }
+        
+        document.getElementById('photoModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                hideModal();
+            }
+        });
+    </script>
+</body>
+</html>

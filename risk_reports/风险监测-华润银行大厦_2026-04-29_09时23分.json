@@ -1,0 +1,191 @@
+{
+  "timestamp": "2026-04-29T09:23:17.042932",
+  "location": "珠海市高新区金业南路",
+  "current_score": 0.0,
+  "predicted_score": 4.5,
+  "risk_level": {
+    "level": 0,
+    "label": "安全",
+    "color": "Color(0,.501961,0,1)",
+    "bg_color": "Color(.8,.95,.8,1)",
+    "threshold": 20
+  },
+  "components": {
+    "weather": {
+      "status": "success",
+      "source": "Open-Meteo",
+      "current_temp": 24.2,
+      "weather": "中雨",
+      "weather_code": 53,
+      "wind_speed": 5.6,
+      "severe_alerts": [],
+      "risk_score": 0,
+      "hourly_forecasts": [
+        {
+          "hour": "08:00",
+          "weather": "雷阵雨",
+          "temp": 23.3,
+          "wind": 8.4,
+          "precip": 78,
+          "severe_alerts": [],
+          "risk_score": 0
+        },
+        {
+          "hour": "09:00",
+          "weather": "雷阵中雨",
+          "temp": 23.0,
+          "wind": 9.9,
+          "precip": 88,
+          "severe_alerts": [
+            "强降水: 88%"
+          ],
+          "risk_score": 15
+        },
+        {
+          "hour": "10:00",
+          "weather": "小雨",
+          "temp": 22.2,
+          "wind": 7.8,
+          "precip": 94,
+          "severe_alerts": [
+            "强降水: 94%"
+          ],
+          "risk_score": 15
+        },
+        {
+          "hour": "11:00",
+          "weather": "阴天",
+          "temp": 22.8,
+          "wind": 8.9,
+          "precip": 94,
+          "severe_alerts": [
+            "强降水: 94%"
+          ],
+          "risk_score": 15
+        },
+        {
+          "hour": "12:00",
+          "weather": "阴天",
+          "temp": 22.5,
+          "wind": 8.7,
+          "precip": 90,
+          "severe_alerts": [
+            "强降水: 90%"
+          ],
+          "risk_score": 15
+        },
+        {
+          "hour": "13:00",
+          "weather": "晴天",
+          "temp": 22.2,
+          "wind": 6.4,
+          "precip": 84,
+          "severe_alerts": [
+            "强降水: 84%"
+          ],
+          "risk_score": 15
+        },
+        {
+          "hour": "14:00",
+          "weather": "晴天",
+          "temp": 22.0,
+          "wind": 5.4,
+          "precip": 74,
+          "severe_alerts": [],
+          "risk_score": 0
+        },
+        {
+          "hour": "15:00",
+          "weather": "晴天",
+          "temp": 23.1,
+          "wind": 5.0,
+          "precip": 63,
+          "severe_alerts": [],
+          "risk_score": 0
+        },
+        {
+          "hour": "16:00",
+          "weather": "小雨",
+          "temp": 24.9,
+          "wind": 5.0,
+          "precip": 57,
+          "severe_alerts": [],
+          "risk_score": 0
+        },
+        {
+          "hour": "17:00",
+          "weather": "中雨",
+          "temp": 24.6,
+          "wind": 4.9,
+          "precip": 63,
+          "severe_alerts": [],
+          "risk_score": 0
+        },
+        {
+          "hour": "18:00",
+          "weather": "雷阵中雨",
+          "temp": 22.8,
+          "wind": 5.9,
+          "precip": 74,
+          "severe_alerts": [],
+          "risk_score": 0
+        },
+        {
+          "hour": "19:00",
+          "weather": "阵中雨",
+          "temp": 23.2,
+          "wind": 4.5,
+          "precip": 84,
+          "severe_alerts": [
+            "强降水: 84%"
+          ],
+          "risk_score": 15
+        }
+      ]
+    },
+    "social_media": {
+      "status": "error",
+      "message": "",
+      "source": "NewsAPI",
+      "risk_score": 0
+    },
+    "security": {
+      "status": "error",
+      "message": "",
+      "source": "NewsAPI",
+      "risk_score": 0
+    },
+    "traffic": {
+      "status": "error",
+      "message": "INVALID_USER_KEY",
+      "source": "高德地图",
+      "risk_score": 0
+    }
+  },
+  "prediction": {
+    "prediction": "中等风险",
+    "peak_risk": 15,
+    "peak_time": "09:00",
+    "warnings": [
+      "09:00: 强降水: 88%",
+      "10:00: 强降水: 94%",
+      "11:00: 强降水: 94%",
+      "12:00: 强降水: 90%",
+      "13:00: 强降水: 84%",
+      "19:00: 强降水: 84%"
+    ],
+    "hours_ahead": 12
+  },
+  "api_status": {
+    "weather": "success",
+    "newsapi": "error: ",
+    "security": "error: "
+  },
+  "recommendations": [
+    "[预测预警] 未来12小时有风险",
+    "  09:00: 强降水: 88%",
+    "  10:00: 强降水: 94%",
+    "  11:00: 强降水: 94%",
+    "[安全] 当前及预测未来风险较低，安全状况良好"
+  ]
+}

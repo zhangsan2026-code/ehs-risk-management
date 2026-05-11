@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>珠海华润银行大厦延时加班统计表</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 20px; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
+        .btn { padding: 10px 20px; background: #10b981; color: white; border: none; border-radius: 6px; cursor: pointer; text-decoration: none; display: inline-block; margin-right: 10px; font-size: 14px; }
+        .btn:hover { background: #059669; }
+        .btn-export { background: #3b82f6; }
+        .btn-export:hover { background: #2563eb; }
+        .btn-parse { background: #8b5cf6; }
+        .btn-parse:hover { background: #7c3aed; }
+        .btn-edit { background: #f59e0b; padding: 6px 12px; margin-right: 5px; }
+        .btn-edit:hover { background: #d97706; }
+        .btn-delete { background: #ef4444; padding: 6px 12px; }
+        .btn-delete:hover { background: #dc2626; }
+        .btn-batch-delete { background: #dc2626; }
+        .btn-batch-delete:hover { background: #b91c1c; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #e5e7eb; font-size: 14px; }
+        th { background: #f3f4f6; font-weight: 600; }
+        tr:hover { background: #f9fafb; }
+        .empty { text-align: center; color: #9ca3af; padding: 40px; }
+        .checkbox-cell { width: 60px; }
+        .select-all { cursor: pointer; }
+        @media (max-width: 768px) {
+            .header { flex-direction: column; align-items: flex-start; }
+            .btn { margin-bottom: 10px; }
+            table { display: block; overflow-x: auto; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>珠海华润银行大厦延时加班统计表</h1>
+        <div>
+            <a href="/add" class="btn">添加记录</a>
+            <a href="/parse" class="btn btn-parse">聊天解析</a>
+            <a href="/export" class="btn btn-export">导出报表</a>
+            <button type="button" class="btn btn-batch-delete" onclick="batchDelete()" id="batchDeleteBtn" disabled>批量删除</button>
+        </div>
+    </div>
+    
+    <form id="batchForm" action="/batch_delete" method="post">
+        <table>
+            <thead>
+                <tr>
+                    <th class="checkbox-cell"><input type="checkbox" class="select-all" onclick="toggleSelectAll()"> 全选</th>
+                    <th>日期</th>
+                    <th>加班楼层</th>
+                    <th>加班部门</th>
+                    <th>加班人员</th>
+                    <th>预计加班时间</th>
+                    <th>值班人员</th>
+                    <th>备注</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if records %}
+                    {% for record in records %}
+                    <tr>
+                        <td class="checkbox-cell"><input type="checkbox" name="ids" value="{{ record.idx }}"></td>
+                        <td>{{ record.date }}</td>
+                        <td>{{ record.floor }}</td>
+                        <td>{{ record.dept }}</td>
+                        <td>{{ record.person }}</td>
+                        <td>{{ record.time }}</td>
+                        <td>{{ record.on_duty }}</td>
+                        <td>{{ record.notes }}</td>
+                        <td>
+                            <a href="/edit/{{ record.idx }}" class="btn btn-edit">编辑</a>
+                            <a href="/delete/{{ record.idx }}" class="btn btn-delete" onclick="return confirm('确定删除？')">删除</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr><td colspan="9" class="empty">暂无记录</td></tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </form>
+    
+    <script>
+        function toggleSelectAll() {
+            const checkboxes = document.querySelectorAll('input[name="ids"]');
+            const selectAll = document.querySelector('.select-all');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = selectAll.checked;
+            });
+            updateBatchButton();
+        }
+        
+        document.querySelectorAll('input[name="ids"]').forEach(checkbox => {
+            checkbox.addEventListener('change', updateBatchButton);
+        });
+        
+        function updateBatchButton() {
+            const checkboxes = document.querySelectorAll('input[name="ids"]:checked');
+            const batchBtn = document.getElementById('batchDeleteBtn');
+            batchBtn.disabled = checkboxes.length === 0;
+        }
+        
+        function batchDelete() {
+            const checkboxes = document.querySelectorAll('input[name="ids"]:checked');
+            if (checkboxes.length === 0) {
+                alert('请选择要删除的记录');
+                return false;
+            }
+            var userConfirm = window.confirm('确定删除选中的 ' + checkboxes.length + ' 条记录？');
+            if (userConfirm == true) {
+                document.getElementById('batchForm').submit();
+            }
+            return false;
+        }
+    </script>
+</body>
+</html>

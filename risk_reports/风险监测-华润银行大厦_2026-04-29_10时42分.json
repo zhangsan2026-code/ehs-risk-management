@@ -1,0 +1,264 @@
+{
+  "timestamp": "2026-04-29T10:42:05.048011",
+  "location": "珠海市高新区金业南路",
+  "current_score": 6.6,
+  "predicted_score": 11.1,
+  "risk_level": {
+    "level": 0,
+    "label": "安全",
+    "color": "Color(0,.501961,0,1)",
+    "bg_color": "Color(.8,.95,.8,1)",
+    "threshold": 20
+  },
+  "components": {
+    "weather": {
+      "status": "success",
+      "source": "Open-Meteo",
+      "current_temp": 22.9,
+      "weather": "雷阵中雨",
+      "weather_code": 81,
+      "wind_speed": 3.9,
+      "severe_alerts": [],
+      "risk_score": 0,
+      "hourly_forecasts": [
+        {
+          "hour": "08:00",
+          "weather": "雷阵雨",
+          "temp": 23.3,
+          "wind": 8.4,
+          "precip": 78,
+          "severe_alerts": [],
+          "risk_score": 0
+        },
+        {
+          "hour": "09:00",
+          "weather": "雷阵中雨",
+          "temp": 23.0,
+          "wind": 9.9,
+          "precip": 88,
+          "severe_alerts": [
+            "强降水: 88%"
+          ],
+          "risk_score": 15
+        },
+        {
+          "hour": "10:00",
+          "weather": "小雨",
+          "temp": 22.2,
+          "wind": 7.8,
+          "precip": 94,
+          "severe_alerts": [
+            "强降水: 94%"
+          ],
+          "risk_score": 15
+        },
+        {
+          "hour": "11:00",
+          "weather": "阴天",
+          "temp": 22.8,
+          "wind": 8.9,
+          "precip": 94,
+          "severe_alerts": [
+            "强降水: 94%"
+          ],
+          "risk_score": 15
+        },
+        {
+          "hour": "12:00",
+          "weather": "阴天",
+          "temp": 22.5,
+          "wind": 8.7,
+          "precip": 90,
+          "severe_alerts": [
+            "强降水: 90%"
+          ],
+          "risk_score": 15
+        },
+        {
+          "hour": "13:00",
+          "weather": "晴天",
+          "temp": 22.2,
+          "wind": 6.4,
+          "precip": 84,
+          "severe_alerts": [
+            "强降水: 84%"
+          ],
+          "risk_score": 15
+        },
+        {
+          "hour": "14:00",
+          "weather": "晴天",
+          "temp": 22.0,
+          "wind": 5.4,
+          "precip": 74,
+          "severe_alerts": [],
+          "risk_score": 0
+        },
+        {
+          "hour": "15:00",
+          "weather": "晴天",
+          "temp": 23.1,
+          "wind": 5.0,
+          "precip": 63,
+          "severe_alerts": [],
+          "risk_score": 0
+        },
+        {
+          "hour": "16:00",
+          "weather": "小雨",
+          "temp": 24.9,
+          "wind": 5.0,
+          "precip": 57,
+          "severe_alerts": [],
+          "risk_score": 0
+        },
+        {
+          "hour": "17:00",
+          "weather": "中雨",
+          "temp": 24.6,
+          "wind": 4.9,
+          "precip": 63,
+          "severe_alerts": [],
+          "risk_score": 0
+        },
+        {
+          "hour": "18:00",
+          "weather": "雷阵中雨",
+          "temp": 22.8,
+          "wind": 5.9,
+          "precip": 74,
+          "severe_alerts": [],
+          "risk_score": 0
+        },
+        {
+          "hour": "19:00",
+          "weather": "阵中雨",
+          "temp": 23.2,
+          "wind": 4.5,
+          "precip": 84,
+          "severe_alerts": [
+            "强降水: 84%"
+          ],
+          "risk_score": 15
+        }
+      ]
+    },
+    "social_media": {
+      "status": "success",
+      "source": "模拟数据",
+      "total_posts": 25,
+      "risk_posts": 3,
+      "negative_posts": 2,
+      "sentiment_score": 0.72,
+      "sentiment_label": "正面",
+      "risk_score": 13,
+      "article_details": [
+        {
+          "title": "珠海华润银行发布年度业绩报告，净利润同比增长15%",
+          "source": "财经新闻网",
+          "url": "#",
+          "risk_type": "风险"
+        },
+        {
+          "title": "监管部门对珠海部分银行进行合规检查",
+          "source": "金融时报",
+          "url": "#",
+          "risk_type": "风险"
+        },
+        {
+          "title": "市民投诉某银行服务态度问题",
+          "source": "本地新闻",
+          "url": "#",
+          "risk_type": "负面"
+        },
+        {
+          "title": "珠海高新区金融产业发展迅速，多家银行入驻",
+          "source": "经济日报",
+          "url": "#",
+          "risk_type": "风险"
+        },
+        {
+          "title": "银行理财产品收益下降引发投资者不满",
+          "source": "证券时报",
+          "url": "#",
+          "risk_type": "负面"
+        }
+      ],
+      "updated_at": "2026-04-29 10:41:48",
+      "note": "数据来自模拟，配置NewsAPI密钥后获取真实数据"
+    },
+    "security": {
+      "status": "success",
+      "source": "模拟数据",
+      "district": "高新区",
+      "overall_safety": "良好",
+      "total_incidents": 3,
+      "violent_count": 0,
+      "theft_count": 1,
+      "fraud_count": 2,
+      "fire_count": 0,
+      "traffic_count": 0,
+      "incident_details": [
+        {
+          "title": "高新区某小区发生入室盗窃案件",
+          "source": "珠海公安",
+          "incident_types": [
+            "盗窃"
+          ],
+          "severity": "一般"
+        },
+        {
+          "title": "市民遭遇网络诈骗，损失金额较大",
+          "source": "警方通报",
+          "incident_types": [
+            "诈骗"
+          ],
+          "severity": "一般"
+        },
+        {
+          "title": "警惕！新型电信诈骗手段出现",
+          "source": "反诈中心",
+          "incident_types": [
+            "诈骗"
+          ],
+          "severity": "一般"
+        }
+      ],
+      "risk_score": 9,
+      "updated_at": "2026-04-29 10:42:04",
+      "note": "数据来自模拟，配置NewsAPI密钥后获取真实数据"
+    },
+    "traffic": {
+      "status": "error",
+      "message": "INVALID_USER_KEY",
+      "source": "高德地图",
+      "risk_score": 0
+    }
+  },
+  "prediction": {
+    "prediction": "中等风险",
+    "peak_risk": 15,
+    "peak_time": "09:00",
+    "warnings": [
+      "09:00: 强降水: 88%",
+      "10:00: 强降水: 94%",
+      "11:00: 强降水: 94%",
+      "12:00: 强降水: 90%",
+      "13:00: 强降水: 84%",
+      "19:00: 强降水: 84%"
+    ],
+    "hours_ahead": 12
+  },
+  "api_status": {
+    "weather": "success",
+    "newsapi": "error: ",
+    "security": "error: "
+  },
+  "recommendations": [
+    "[预测预警] 未来12小时有风险",
+    "  09:00: 强降水: 88%",
+    "  10:00: 强降水: 94%",
+    "  11:00: 强降水: 94%",
+    "[安全] 当前及预测未来风险较低，安全状况良好"
+  ]
+}

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>聊天记录解析</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 20px; max-width: 800px; margin: 0 auto; }
+        h1 { margin-bottom: 20px; }
+        form { display: flex; flex-direction: column; gap: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: 500; }
+        textarea { width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; min-height: 150px; resize: vertical; }
+        .btn { padding: 12px 20px; background: #10b981; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; text-decoration: none; display: inline-block; margin-right: 10px; }
+        .btn:hover { background: #059669; }
+        .btn-parse { background: #8b5cf6; }
+        .btn-parse:hover { background: #7c3aed; }
+        .btn-add { background: #3b82f6; }
+        .btn-add:hover { background: #2563eb; }
+        .btn-cancel { background: #6b7280; }
+        .btn-cancel:hover { background: #4b5563; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #e5e7eb; font-size: 14px; }
+        th { background: #f3f4f6; font-weight: 600; }
+        tr:hover { background: #f9fafb; }
+        .empty { text-align: center; color: #9ca3af; padding: 40px; }
+        .back-link { color: #3b82f6; text-decoration: none; margin-bottom: 10px; display: inline-block; }
+        .btn-group { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <a href="/" class="back-link">← 返回列表</a>
+    <h1>聊天记录解析</h1>
+    <form method="post">
+        <div>
+            <label>请粘贴聊天记录：</label>
+            <textarea name="chat_text" placeholder="例如：
+22楼个人信贷部李琼总预计加班到22:00
+21楼个人信贷部李焱总预计加班到22:00
+2133（需要保持开启玻璃门灯！）"></textarea>
+        </div>
+        <div>
+            <button type="submit" class="btn btn-parse">解析</button>
+            <a href="/" class="btn btn-cancel">取消</a>
+        </div>
+    </form>
+    
+    {% if parsed_results %}
+    <h2 style="margin-top: 30px;">解析结果（共 {{ parsed_results|length }} 条）</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>日期</th>
+                <th>加班楼层</th>
+                <th>加班部门</th>
+                <th>加班人员</th>
+                <th>预计加班时间</th>
+                <th>值班人员</th>
+                <th>备注</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for result in parsed_results %}
+            <tr>
+                <td>{{ result.日期 }}</td>
+                <td>{{ result.加班楼层 }}</td>
+                <td>{{ result.部门 }}</td>
+                <td>{{ result.人员 }}</td>
+                <td>{{ result.预计加班时间 }}</td>
+                <td>{{ result.值班人员 }}</td>
+                <td>{{ result.备注 }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="btn-group">
+        <a href="/parse?add_all=1" class="btn btn-add" onclick="return confirm('确定将所有解析结果添加到记录中？')">添加全部</a>
+    </div>
+    {% endif %}
+</body>
+</html>

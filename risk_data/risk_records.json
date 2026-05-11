@@ -1,0 +1,101 @@
+[
+  {
+    "id": "d731555b",
+    "title": "气瓶随意摆放",
+    "description": "发现公寓15层消防前室遗留气瓶，存在隐患",
+    "category": "消防安全",
+    "level": "中风险",
+    "location": "公寓15层消防前室",
+    "discovered_by": "王奥",
+    "discovered_at": "2026-05-06T11:27:07.012074",
+    "ehs_standard": "",
+    "priority": 2,
+    "status": "已解决",
+    "assigned_to": "工程-何洪林",
+    "corrective_dept": "",
+    "corrective_by": "",
+    "photos": [
+      "0bd880b2-9b8c-4563-bb94-362e53b103da.jpg"
+    ],
+    "before_photos": [],
+    "after_photos": [],
+    "check_items": [],
+    "assessed_at": null,
+    "assessed_by": "",
+    "assessment_note": "",
+    "action_plan": "",
+    "due_date": null,
+    "progress": 100,
+    "resolved_at": "2026-05-06T11:45:39.248188",
+    "resolved_by": "何洪林",
+    "resolution_note": "已现场清理",
+    "audit_status": "pending",
+    "audited_at": null,
+    "audited_by": "",
+    "audit_note": "",
+    "reminders": [],
+    "history": [
+      {
+        "timestamp": "2026-05-06T11:27:07.012096",
+        "action": "风险记录创建",
+        "detail": "创建者: 王奥"
+      },
+      {
+        "timestamp": "2026-05-06T11:44:53.389005",
+        "action": "风险分配",
+        "detail": "分配给: 工程-何洪林"
+      },
+      {
+        "timestamp": "2026-05-06T11:45:03.063170",
+        "action": "进度更新",
+        "detail": "进度: 0%"
+      },
+      {
+        "timestamp": "2026-05-06T11:45:39.248193",
+        "action": "风险解决",
+        "detail": "解决人: 何洪林, 备注: 已现场清理"
+      }
+    ]
+  },
+  {
+    "id": "b14d2a89",
+    "title": "27层消防通道杂物堆积",
+    "description": "27层消防通道杂物堆积，存在消防隐患",
+    "category": "消防安全",
+    "level": "中风险",
+    "location": "27层",
+    "discovered_by": "王奥",
+    "discovered_at": "2026-05-11T09:38:21.012352",
+    "ehs_standard": "EHS-F-001 - 消防安全管理制度",
+    "priority": 3,
+    "status": "待处理",
+    "assigned_to": "",
+    "corrective_dept": "秩序部",
+    "corrective_by": "张浚宁",
+    "photos": [],
+    "before_photos": [],
+    "after_photos": [],
+    "check_items": [],
+    "assessed_at": null,
+    "assessed_by": "",
+    "assessment_note": "",
+    "action_plan": "",
+    "due_date": null,
+    "progress": 0,
+    "resolved_at": null,
+    "resolved_by": "",
+    "resolution_note": "",
+    "audit_status": "pending",
+    "audited_at": null,
+    "audited_by": "",
+    "audit_note": "",
+    "reminders": [],
+    "history": [
+      {
+        "timestamp": "2026-05-11T09:38:21.012375",
+        "action": "风险记录创建",
+        "detail": "创建者: 王奥"
+      }
+    ]
+  }
+]

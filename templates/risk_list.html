@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EHS风险台账</title>
+    <style>
+        :root {
+            --primary-color: #1e40af;
+            --primary-light: #3b82f6;
+            --primary-dark: #1e3a8a;
+            --secondary-color: #64748b;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --info-color: #06b6d4;
+            --bg-color: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        
+        .header { 
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white; 
+            padding: 1.25rem 2rem; 
+            box-shadow: var(--shadow-lg);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header h1 { 
+            font-size: 1.5rem; 
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .header h1 svg {
+            width: 28px;
+            height: 28px;
+        }
+        
+        .nav { 
+            display: flex; 
+            gap: 0.25rem; 
+        }
+        
+        .nav a { 
+            color: rgba(255, 255, 255, 0.9); 
+            text-decoration: none; 
+            padding: 0.5rem 1rem; 
+            border-radius: 6px; 
+            transition: all 0.2s ease;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .nav a:hover { 
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+        }
+        
+        .nav a.active { 
+            background: rgba(255, 255, 255, 0.25);
+            color: white;
+        }
+        
+        .container { 
+            max-width: 1400px; 
+            margin: 2rem auto; 
+            padding: 0 1rem; 
+        }
+        
+        .toolbar { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 1.5rem; 
+            flex-wrap: wrap; 
+            gap: 1rem; 
+        }
+        
+        .search-box { 
+            display: flex; 
+            gap: 0.5rem; 
+            flex-wrap: wrap; 
+        }
+        
+        .search-box input, .search-box select { 
+            padding: 0.5rem 0.75rem; 
+            border: 1px solid var(--border-color); 
+            border-radius: 6px; 
+            font-size: 0.9rem;
+            background: var(--card-bg);
+        }
+        
+        .search-box button { 
+            padding: 0.5rem 1rem; 
+            background: var(--primary-color); 
+            color: white; 
+            border: none; 
+            border-radius: 6px; 
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.2s ease;
+        }
+        
+        .search-box button:hover {
+            background: var(--primary-dark);
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-primary { 
+            background: var(--primary-color); 
+            color: white; 
+        }
+        
+        .btn-primary:hover { 
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .btn-secondary { 
+            background: var(--bg-color); 
+            color: var(--text-primary); 
+        }
+        
+        .btn-secondary:hover { 
+            background: var(--border-color); 
+        }
+        
+        .btn-danger { 
+            background: var(--danger-color); 
+            color: white; 
+        }
+        
+        .btn-danger:hover { 
+            background: #dc2626; 
+        }
+        
+        .card { 
+            background: var(--card-bg); 
+            border-radius: 12px; 
+            box-shadow: var(--shadow-md); 
+            overflow: hidden; 
+        }
+        
+        .card-header { 
+            padding: 1rem 1.5rem; 
+            border-bottom: 1px solid var(--border-color); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            background: var(--bg-color);
+        }
+        
+        .card-header h2 { 
+            font-size: 1.1rem; 
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+        
+        .card-header .count {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+        }
+        
+        .table { 
+            width: 100%; 
+            border-collapse: collapse; 
+        }
+        
+        .table th, .table td { 
+            padding: 0.875rem; 
+            text-align: left; 
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .table th { 
+            background: var(--bg-color); 
+            font-weight: 600; 
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .table tr:hover {
+            background: rgba(30, 64, 175, 0.02);
+        }
+        
+        .level-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.375rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .level-critical { background: #fef2f2; color: #dc2626; }
+        .level-high { background: #fee2e2; color: #ef4444; }
+        .level-medium { background: #fef3c7; color: #d97706; }
+        .level-low { background: #dbeafe; color: #2563eb; }
+        .level-info { background: #f3f4f6; color: #6b7280; }
+        
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .status-pending { background: #fef3c7; color: #d97706; }
+        .status-processing { background: #dbeafe; color: #2563eb; }
+        .status-resolved { background: #dcfce7; color: #16a34a; }
+        .status-closed { background: #f3f4f6; color: #6b7280; }
+        .status-escalated { background: #fee2e2; color: #ef4444; }
+        
+        .progress-bar { 
+            width: 100%; 
+            height: 8px; 
+            background: var(--border-color); 
+            border-radius: 4px; 
+            overflow: hidden; 
+        }
+        
+        .progress-fill { 
+            height: 100%; 
+            background: linear-gradient(90deg, var(--primary-color), var(--primary-light)); 
+            border-radius: 4px; 
+            transition: width 0.3s ease;
+        }
+        
+        .progress-text {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-align: right;
+            margin-top: 0.25rem;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 4rem;
+            color: var(--text-secondary);
+        }
+        
+        .empty-state .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        
+        .empty-state p {
+            font-size: 0.9rem;
+        }
+        
+        .filter-tags { 
+            display: flex; 
+            gap: 0.5rem; 
+            flex-wrap: wrap; 
+            margin-bottom: 1rem; 
+        }
+        
+        .filter-tag { 
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.375rem 0.75rem; 
+            background: #e0e7ff; 
+            color: #4338ca; 
+            border-radius: 20px; 
+            font-size: 0.8rem; 
+        }
+        
+        .filter-tag .remove { 
+            cursor: pointer; 
+            color: #7c3aed;
+            font-weight: bold;
+        }
+        
+        .filter-tag .remove:hover {
+            color: #5b21b6;
+        }
+        
+        @media (max-width: 768px) {
+            .toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-box {
+                justify-content: center;
+            }
+            
+            .search-box input, .search-box select {
+                min-width: 120px;
+            }
+            
+            .table th, .table td {
+                padding: 0.5rem;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <h1>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 12l2 2 4-4"/>
+                    <circle cx="12" cy="12" r="10"/>
+                </svg>
+                EHS风险排查台账系统
+            </h1>
+            <div class="nav">
+                <a href="/dashboard">仪表盘</a>
+                <a href="/risk/list" class="active">风险台账</a>
+                <a href="/notifications">通知</a>
+                <a href="/extension/approve">审批管理</a>
+                <a href="/audit/list">整改审核</a>
+                <a href="/ehs/list">EHS标准库</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="toolbar">
+            <div class="search-box">
+                <input type="text" name="keyword" placeholder="搜索风险标题/描述/位置" value="{{ keyword if keyword else '' }}">
+                <select name="status">
+                    <option value="">全部状态</option>
+                    {% for status in status_options %}
+                    <option value="{{ status }}" {% if status_filter == status %}selected{% endif %}>{{ status }}</option>
+                    {% endfor %}
+                </select>
+                <select name="category">
+                    <option value="">全部分类</option>
+                    {% for category in category_options %}
+                    <option value="{{ category }}" {% if category_filter == category %}selected{% endif %}>{{ category }}</option>
+                    {% endfor %}
+                </select>
+                <select name="level">
+                    <option value="">全部等级</option>
+                    {% for level in level_options %}
+                    <option value="{{ level }}" {% if level_filter == level %}selected{% endif %}>{{ level }}</option>
+                    {% endfor %}
+                </select>
+                <button onclick="document.querySelector('form').submit()">筛选</button>
+            </div>
+            <a href="/risk/add" class="btn btn-primary">+ 添加风险记录</a>
+        </div>
+
+        <form method="get" style="display: none;">
+            <input name="keyword" value="{{ keyword }}">
+            <input name="status" value="{{ status_filter }}">
+            <input name="category" value="{{ category_filter }}">
+            <input name="level" value="{{ level_filter }}">
+        </form>
+
+        {% if status_filter or category_filter or level_filter or keyword %}
+        <div class="filter-tags">
+            {% if status_filter %}<span class="filter-tag">{{ status_filter }} <span class="remove" onclick="removeFilter('status')">×</span></span>{% endif %}
+            {% if category_filter %}<span class="filter-tag">{{ category_filter }} <span class="remove" onclick="removeFilter('category')">×</span></span>{% endif %}
+            {% if level_filter %}<span class="filter-tag">{{ level_filter }} <span class="remove" onclick="removeFilter('level')">×</span></span>{% endif %}
+            {% if keyword %}<span class="filter-tag">"{{ keyword }}" <span class="remove" onclick="removeFilter('keyword')">×</span></span>{% endif %}
+        </div>
+        {% endif %}
+
+        <div class="card">
+            <div class="card-header">
+                <h2>📋 风险台账列表</h2>
+                <span class="count">共 {{ records|length }} 条记录</span>
+            </div>
+            
+            <div class="table-container">
+                {% if records %}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>编号</th>
+                            <th>标题</th>
+                            <th>分类</th>
+                            <th>等级</th>
+                            <th>位置</th>
+                            <th>整改部门</th>
+                            <th>整改人</th>
+                            <th>状态</th>
+                            <th>进度</th>
+                            <th>负责人</th>
+                            <th>发现时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in records %}
+                        <tr>
+                            <td><code style="color: var(--primary-color); font-weight: 600;">{{ record.id }}</code></td>
+                            <td style="max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ record.title }}</td>
+                            <td>{{ record.category.value }}</td>
+                            <td><span class="level-badge">{{ record.level.value }}</span></td>
+                            <td>{{ record.location or '-' }}</td>
+                            <td>{{ record.corrective_dept or '-' }}</td>
+                            <td>{{ record.corrective_by or '-' }}</td>
+                            <td><span class="status-badge">{{ record.status.value }}</span></td>
+                            <td>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: {{ record.progress }}%"></div>
+                                </div>
+                                <div class="progress-text">{{ record.progress }}%</div>
+                            </td>
+                            <td>{{ record.assigned_to or '-' }}</td>
+                            <td>{{ record.discovered_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                            <td>
+                                <a href="/risk/detail/{{ record.id }}" class="btn btn-secondary" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; margin-right: 0.25rem;">详情</a>
+                                <a href="/risk/edit/{{ record.id }}" class="btn btn-secondary" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">编辑</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="empty-state">
+                    <div class="empty-icon">📭</div>
+                    <p>暂无风险记录</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function removeFilter(type) {
+            const form = document.querySelector('form');
+            form.querySelector(`[name="${type}"]`).value = '';
+            form.submit();
+        }
+    </script>
+</body>
+</html>

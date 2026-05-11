@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EHS风险详情</title>
+    <style>
+        :root {
+            --primary-color: #1e40af;
+            --primary-light: #3b82f6;
+            --primary-dark: #1e3a8a;
+            --secondary-color: #64748b;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --info-color: #06b6d4;
+            --bg-color: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        
+        .header { 
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white; 
+            padding: 1.25rem 2rem; 
+            box-shadow: var(--shadow-lg);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header h1 { 
+            font-size: 1.5rem; 
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .header h1 svg {
+            width: 28px;
+            height: 28px;
+        }
+        
+        .nav { 
+            display: flex; 
+            gap: 0.25rem; 
+        }
+        
+        .nav a { 
+            color: rgba(255, 255, 255, 0.9); 
+            text-decoration: none; 
+            padding: 0.5rem 1rem; 
+            border-radius: 6px; 
+            transition: all 0.2s ease;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .nav a:hover { 
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+        }
+        
+        .container { 
+            max-width: 900px; 
+            margin: 2rem auto; 
+            padding: 0 1rem; 
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-primary { 
+            background: var(--primary-color); 
+            color: white; 
+        }
+        
+        .btn-primary:hover { 
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .btn-secondary { 
+            background: var(--bg-color); 
+            color: var(--text-primary); 
+        }
+        
+        .btn-secondary:hover { 
+            background: var(--border-color); 
+        }
+        
+        .btn-warning { 
+            background: var(--warning-color); 
+            color: white; 
+        }
+        
+        .btn-warning:hover { 
+            background: #d97706; 
+        }
+        
+        .btn-danger { 
+            background: var(--danger-color); 
+            color: white; 
+        }
+        
+        .btn-danger:hover { 
+            background: #dc2626; 
+        }
+        
+        .card { 
+            background: var(--card-bg); 
+            border-radius: 12px; 
+            box-shadow: var(--shadow-md); 
+            overflow: hidden; 
+            margin-bottom: 1.5rem; 
+        }
+        
+        .card-header { 
+            padding: 1.5rem; 
+            border-bottom: 1px solid var(--border-color); 
+        }
+        
+        .card-header h2 { 
+            color: var(--text-primary); 
+            display: flex; 
+            align-items: center; 
+            gap: 0.75rem;
+            font-size: 1.25rem;
+        }
+        
+        .card-body { 
+            padding: 1.5rem; 
+        }
+        
+        .info-grid { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 1rem; 
+            margin-bottom: 1.5rem;
+        }
+        
+        .info-item { 
+            padding: 1rem; 
+            background: var(--bg-color); 
+            border-radius: 8px; 
+        }
+        
+        .info-item label { 
+            display: block; 
+            font-size: 0.8rem; 
+            color: var(--text-secondary); 
+            margin-bottom: 0.375rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .info-item value { 
+            font-weight: 600; 
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+        
+        .level-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.375rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .level-critical { background: #fef2f2; color: #dc2626; }
+        .level-high { background: #fee2e2; color: #ef4444; }
+        .level-medium { background: #fef3c7; color: #d97706; }
+        .level-low { background: #dbeafe; color: #2563eb; }
+        .level-info { background: #f3f4f6; color: #6b7280; }
+        
+        .check-section {
+            margin-bottom: 1.5rem;
+        }
+        
+        .check-items-container {
+            display: grid;
+            gap: 0.75rem;
+        }
+        
+        .check-item-card {
+            background: var(--bg-color);
+            border-radius: 8px;
+            padding: 1rem;
+            border-left: 4px solid var(--border-color);
+        }
+        
+        .check-item-card.completed {
+            border-left-color: var(--success-color);
+        }
+        
+        .check-item-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .check-circle {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .check-circle.completed {
+            background: var(--success-color);
+            border-color: var(--success-color);
+        }
+        
+        .check-circle.completed::after {
+            content: '✓';
+            color: white;
+            font-size: 10px;
+        }
+        
+        .check-item-title {
+            font-weight: 500;
+        }
+        
+        .check-item-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        
+        .check-item-photo img {
+            max-width: 150px;
+            border-radius: 4px;
+            margin-top: 0.5rem;
+            cursor: pointer;
+        }
+        
+        .photos-section {
+            margin-bottom: 1.5rem;
+        }
+        
+        .photos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .photo-column {
+            background: var(--bg-color);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .photo-column-header {
+            padding: 0.5rem;
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .photo-column-header.before {
+            background: #fee2e2;
+            color: #ef4444;
+        }
+        
+        .photo-column-header.after {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+        
+        .photo-column .photo-item {
+            padding: 0.5rem;
+        }
+        
+        .photo-column .photo-item img {
+            width: 100%;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .audit-status-section {
+            margin-bottom: 1.5rem;
+        }
+        
+        .audit-status-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+        
+        .audit-status-card.approved {
+            background: #dcfce7;
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .audit-status-card.rejected {
+            background: #fee2e2;
+            border-left: 4px solid var(--danger-color);
+        }
+        
+        .audit-status-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .audit-status-card.approved .audit-status-icon {
+            background: var(--success-color);
+        }
+        
+        .audit-status-card.rejected .audit-status-icon {
+            background: var(--danger-color);
+        }
+        
+        .audit-status-text {
+            font-weight: 600;
+            font-size: 1.05rem;
+        }
+        
+        .audit-status-meta {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+        
+        .audit-status-note {
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        .submit-audit-section {
+            margin-bottom: 1.5rem;
+        }
+        
+        .submit-audit-card {
+            background: #fef3c7;
+            border-radius: 8px;
+            padding: 1rem;
+            border-left: 4px solid var(--warning-color);
+        }
+        
+        .submit-audit-card p {
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .status-pending { background: #fef3c7; color: #d97706; }
+        .status-processing { background: #dbeafe; color: #2563eb; }
+        .status-resolved { background: #dcfce7; color: #16a34a; }
+        .status-closed { background: #f3f4f6; color: #6b7280; }
+        .status-escalated { background: #fee2e2; color: #ef4444; }
+        
+        .photos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 0.75rem;
+        }
+        
+        .photo-item {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .photo-item:hover {
+            transform: scale(1.02);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .photo-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        
+        .photo-item:hover .photo-overlay {
+            opacity: 1;
+        }
+        
+        .zoom-icon {
+            font-size: 1.5rem;
+        }
+        
+        .lightbox-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        
+        .lightbox-overlay.show {
+            display: flex;
+        }
+        
+        .lightbox-content {
+            max-width: 90vw;
+            max-height: 90vh;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .lightbox-content img {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+        }
+        
+        .lightbox-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.25rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s ease;
+        }
+        
+        .lightbox-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .progress-section { margin-top: 1rem; }
+        
+        .progress-bar { 
+            width: 100%; 
+            height: 12px; 
+            background: var(--border-color); 
+            border-radius: 6px; 
+            overflow: hidden; 
+        }
+        
+        .progress-fill { 
+            height: 100%; 
+            background: linear-gradient(90deg, var(--primary-color), var(--primary-light)); 
+            border-radius: 6px; 
+        }
+        
+        .progress-text { 
+            display: flex; 
+            justify-content: space-between; 
+            margin-top: 0.5rem; 
+            color: var(--text-secondary); 
+            font-size: 0.875rem; 
+        }
+        
+        .action-section { 
+            margin-top: 1.5rem; 
+            padding-top: 1.5rem; 
+            border-top: 1px solid var(--border-color); 
+        }
+        
+        .action-section h3 { 
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            color: var(--text-primary);
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+        
+        .related-section { 
+            margin-top: 1.5rem; 
+            padding-top: 1.5rem; 
+            border-top: 1px solid var(--border-color); 
+        }
+        
+        .related-section h3 { 
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            color: var(--text-primary);
+        }
+        
+        .related-list { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+            gap: 1rem; 
+        }
+        
+        .related-item { 
+            padding: 1rem; 
+            background: var(--bg-color); 
+            border-radius: 8px; 
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .related-item .code { 
+            font-size: 0.8rem; 
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .related-item .title { 
+            font-weight: 600; 
+            margin-top: 0.25rem;
+            font-size: 0.9rem;
+        }
+        
+        .related-item a {
+            font-size: 0.8rem; 
+            color: var(--primary-color); 
+            margin-top: 0.5rem; 
+            display: block;
+            text-decoration: none;
+        }
+        
+        .related-item a:hover {
+            text-decoration: underline;
+        }
+        
+        .history-section { 
+            margin-top: 1.5rem; 
+            padding-top: 1.5rem; 
+            border-top: 1px solid var(--border-color); 
+        }
+        
+        .history-section h3 { 
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            color: var(--text-primary);
+        }
+        
+        .history-list { 
+            list-style: none; 
+        }
+        
+        .history-item { 
+            padding: 0.875rem; 
+            border-bottom: 1px solid var(--border-color); 
+            display: flex; 
+            gap: 1rem;
+        }
+        
+        .history-time { 
+            color: var(--text-secondary); 
+            font-size: 0.8rem; 
+            white-space: nowrap;
+        }
+        
+        .history-content { 
+            flex: 1; 
+        }
+        
+        .history-action { 
+            font-weight: 600; 
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+        
+        .history-detail { 
+            color: var(--text-secondary); 
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+        }
+        
+        .empty-state { 
+            color: var(--text-secondary); 
+            text-align: center; 
+            padding: 1rem; 
+        }
+        
+        .content-box {
+            padding: 1.25rem; 
+            background: var(--bg-color); 
+            border-radius: 8px; 
+            white-space: pre-wrap; 
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+        
+        .modal-overlay { 
+            display: none; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            right: 0; 
+            bottom: 0; 
+            background: rgba(0,0,0,0.5); 
+            align-items: center; 
+            justify-content: center; 
+            z-index: 1000;
+            padding: 1rem;
+        }
+        
+        .modal-overlay.show { 
+            display: flex; 
+        }
+        
+        .modal { 
+            background: var(--card-bg); 
+            border-radius: 12px; 
+            padding: 1.5rem; 
+            width: 100%; 
+            max-width: 400px;
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .modal h3 { 
+            margin-bottom: 1rem;
+            font-size: 1.125rem;
+            color: var(--text-primary);
+        }
+        
+        .modal-form { 
+            margin-bottom: 1rem; 
+        }
+        
+        .modal-form label { 
+            display: block; 
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        .modal-form input, .modal-form textarea { 
+            width: 100%; 
+            padding: 0.5rem; 
+            border: 1px solid var(--border-color); 
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+        
+        .modal-form textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        
+        .modal-actions { 
+            display: flex; 
+            justify-content: flex-end; 
+            gap: 0.5rem; 
+        }
+        
+        @media (max-width: 768px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <h1>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 12l2 2 4-4"/>
+                    <circle cx="12" cy="12" r="10"/>
+                </svg>
+                EHS风险排查台账系统
+            </h1>
+            <div class="nav">
+                <a href="/dashboard">仪表盘</a>
+                <a href="/risk/list">风险台账</a>
+                <a href="/notifications">通知</a>
+                <a href="/extension/approve">审批管理</a>
+                <a href="/ehs/list">EHS标准库</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <a href="/risk/list" class="btn btn-secondary" style="margin-bottom: 1.5rem;">← 返回列表</a>
+        
+        <div class="card">
+            <div class="card-header">
+                <h2>
+                    <span style="font-size: 1.5rem;">📋</span>
+                    {{ record.title }}
+                    <span class="level-badge">{{ record.level.value }}</span>
+                    <span class="status-badge">{{ record.status.value }}</span>
+                </h2>
+            </div>
+            
+            <div class="card-body">
+                <div class="info-grid">
+                    <div class="info-item">
+                        <label>风险编号</label>
+                        <value><code>{{ record.id }}</code></value>
+                    </div>
+                    <div class="info-item">
+                        <label>风险分类</label>
+                        <value>{{ record.category.value }}</value>
+                    </div>
+                    <div class="info-item">
+                        <label>发现位置</label>
+                        <value>{{ record.location or '-' }}</value>
+                    </div>
+                    <div class="info-item">
+                        <label>发现人</label>
+                        <value>{{ record.discovered_by or '-' }}</value>
+                    </div>
+                    <div class="info-item">
+                        <label>发现时间</label>
+                        <value>{{ record.discovered_at.strftime('%Y-%m-%d %H:%M') }}</value>
+                    </div>
+                    <div class="info-item">
+                        <label>整改部门</label>
+                        <value>{{ record.corrective_dept or '-' }}</value>
+                    </div>
+                    <div class="info-item">
+                        <label>整改人</label>
+                        <value>{{ record.corrective_by or '-' }}</value>
+                    </div>
+                    <div class="info-item">
+                        <label>负责人</label>
+                        <value>{{ record.assigned_to or '-' }}</value>
+                    </div>
+                    <div class="info-item">
+                        <label>优先级</label>
+                        <value>P{{ record.priority }}</value>
+                    </div>
+                    <div class="info-item">
+                        <label>关联标准</label>
+                        <value>{{ record.ehs_standard or '-' }}</value>
+                    </div>
+                </div>
+
+                <div style="margin-top: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em;">风险描述</label>
+                    <div class="content-box">{{ record.description }}</div>
+                </div>
+
+                {% if record.action_plan %}
+                <div style="margin-top: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em;">处置方案</label>
+                    <div class="content-box">{{ record.action_plan }}</div>
+                    {% if record.due_date %}
+                    <div style="margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.875rem;">⏰ 截止日期：{{ record.due_date.strftime('%Y-%m-%d') }}</div>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                {% if record.resolution_note %}
+                <div style="margin-top: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em;">解决备注</label>
+                    <div style="padding: 1.25rem; background: #dcfce7; border-radius: 8px; white-space: pre-wrap; line-height: 1.8;">{{ record.resolution_note }}</div>
+                    <div style="margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.875rem;">解决人：{{ record.resolved_by }} | 时间：{{ record.resolved_at.strftime('%Y-%m-%d %H:%M') if record.resolved_at else '-' }}</div>
+                </div>
+                {% endif %}
+
+                <div class="progress-section">
+                    <label style="display: block; margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em;">处理进度</label>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: {{ record.progress }}%"></div>
+                    </div>
+                    <div class="progress-text">
+                        <span>当前进度</span>
+                        <span>{{ record.progress }}%</span>
+                    </div>
+                </div>
+
+                {% if record.photos %}
+                <div style="margin-top: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.75rem; color: var(--text-secondary); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em;">现场照片</label>
+                    <div class="photos-grid">
+                        {% for photo in record.photos %}
+                        <div class="photo-item" onclick="openLightbox('/risk/photo/{{ photo }}')">
+                            <img src="/risk/photo/{{ photo }}" alt="风险照片">
+                            <div class="photo-overlay">
+                                <span class="zoom-icon">🔍</span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="action-section">
+                    <h3>⚙️ 操作</h3>
+                    <div class="action-buttons">
+                        <a href="/risk/edit/{{ record.id }}" class="btn btn-secondary">编辑</a>
+                        {% if record.status.value == '待处理' %}
+                        <button class="btn btn-primary" onclick="showAssignModal()">分配处理人</button>
+                        {% endif %}
+                        {% if record.status.value != '已关闭' %}
+                        <button class="btn btn-primary" onclick="showProgressModal()">更新进度</button>
+                        {% endif %}
+                        {% if record.status.value != '已解决' and record.status.value != '已关闭' %}
+                        <button class="btn btn-primary" onclick="showResolveModal()">标记解决</button>
+                        {% endif %}
+                        {% if record.due_date %}
+                        <a href="/extension/apply/{{ record.id }}" class="btn btn-warning">申请延期</a>
+                        {% endif %}
+                        <button class="btn btn-danger" onclick="deleteRisk()">删除</button>
+                    </div>
+                </div>
+
+                <div class="check-section">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <h3>✅ 整改检查项</h3>
+                        {% if record.status.value == '处理中' or record.status.value == '待处理' %}
+                        <button class="btn btn-secondary" onclick="showAddCheckItemModal()">添加检查项</button>
+                        {% endif %}
+                    </div>
+                    {% if record.check_items %}
+                    <div class="check-items-container">
+                        {% for item in record.check_items %}
+                        <div class="check-item-card {{ 'completed' if item.completed else '' }}">
+                            <div class="check-item-header">
+                                <div class="check-circle {{ 'completed' if item.completed else '' }}"></div>
+                                <div class="check-item-title">{{ item.description }}</div>
+                            </div>
+                            {% if item.completed %}
+                            <div class="check-item-meta">
+                                <span>完成人: {{ item.completed_by }}</span>
+                                <span>{{ item.completed_at[:16] }}</span>
+                            </div>
+                            {% if item.photo %}
+                            <div class="check-item-photo">
+                                <img src="/risk/photo/{{ item.photo }}" alt="完成照片" onclick="showPhoto('/risk/photo/{{ item.photo }}')">
+                            </div>
+                            {% endif %}
+                            {% elif record.status.value == '处理中' %}
+                            <button class="btn btn-primary" onclick="showCompleteCheckItemModal('{{ item.id }}')">标记完成</button>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="empty-state">暂无检查项，点击上方按钮添加</div>
+                    {% endif %}
+                </div>
+
+                <div class="photos-section">
+                    <h3>📷 整改照片对比</h3>
+                    <div class="photos-grid">
+                        {% if record.before_photos %}
+                        <div class="photo-column">
+                            <div class="photo-column-header before">整改前</div>
+                            {% for photo in record.before_photos %}
+                            <div class="photo-item" onclick="showPhoto('/risk/photo/{{ photo }}')">
+                                <img src="/risk/photo/{{ photo }}" alt="整改前">
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        {% if record.after_photos %}
+                        <div class="photo-column">
+                            <div class="photo-column-header after">整改后</div>
+                            {% for photo in record.after_photos %}
+                            <div class="photo-item" onclick="showPhoto('/risk/photo/{{ photo }}')">
+                                <img src="/risk/photo/{{ photo }}" alt="整改后">
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                {% if record.audit_status != 'pending' %}
+                <div class="audit-status-section">
+                    <h3>🔍 审核状态</h3>
+                    <div class="audit-status-card {{ record.audit_status }}">
+                        <div class="audit-status-icon">{{ '✓' if record.audit_status == 'approved' else '✗' }}</div>
+                        <div class="audit-status-info">
+                            <div class="audit-status-text">{{ record.audit_status == 'approved' and '审核通过' or '审核驳回' }}</div>
+                            <div class="audit-status-meta">
+                                审核人: {{ record.audited_by }} | {{ record.audited_at[:16] if record.audited_at else '' }}
+                            </div>
+                            {% if record.audit_note %}
+                            <div class="audit-status-note">{{ record.audit_note }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if record.progress >= 100 and record.status.value == '处理中' %}
+                <div class="submit-audit-section">
+                    <h3>📤 提交审核</h3>
+                    <div class="submit-audit-card">
+                        <p>所有检查项已完成，可提交审核</p>
+                        <form id="submitAuditForm" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label>提交人</label>
+                                <input type="text" name="submitter" required placeholder="请输入您的姓名">
+                            </div>
+                            <div class="form-group">
+                                <label>整改后照片（可选）</label>
+                                <input type="file" name="after_photos" multiple accept="image/*">
+                            </div>
+                            <button type="button" class="btn btn-primary" onclick="submitAudit()">提交审核</button>
+                        </form>
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="related-section">
+                    <h3>📚 关联EHS标准</h3>
+                    {% if related_standards %}
+                    <div class="related-list">
+                        {% for standard in related_standards %}
+                        <div class="related-item">
+                            <div class="code">{{ standard.code }}</div>
+                            <div class="title">{{ standard.title }}</div>
+                            <a href="/ehs/detail/{{ standard.code }}">查看详情 →</a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="empty-state">暂无关联标准</div>
+                    {% endif %}
+                </div>
+
+                <div class="history-section">
+                    <h3>📝 处理历史</h3>
+                    {% if record.history %}
+                    <ul class="history-list">
+                        {% for item in record.history %}
+                        <li class="history-item">
+                            <span class="history-time">{{ datetime.fromisoformat(item.timestamp).strftime('%m-%d %H:%M') }}</span>
+                            <div class="history-content">
+                                <div class="history-action">{{ item.action }}</div>
+                                <div class="history-detail">{{ item.detail }}</div>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <div class="empty-state">暂无处理记录</div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="assignModal" class="modal-overlay">
+        <div class="modal">
+            <h3>分配处理人</h3>
+            <form id="assignForm" class="modal-form">
+                <label>处理人姓名</label>
+                <input type="text" name="assignee" required placeholder="请输入处理人姓名">
+            </form>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="hideModal('assignModal')">取消</button>
+                <button class="btn btn-primary" onclick="submitAssign()">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="progressModal" class="modal-overlay">
+        <div class="modal">
+            <h3>更新进度</h3>
+            <form id="progressForm" class="modal-form">
+                <label>进度 (%)</label>
+                <input type="range" name="progress" min="0" max="100" value="{{ record.progress }}">
+                <span id="progressValue">{{ record.progress }}%</span>
+            </form>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="hideModal('progressModal')">取消</button>
+                <button class="btn btn-primary" onclick="submitProgress()">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="resolveModal" class="modal-overlay">
+        <div class="modal">
+            <h3>标记为已解决</h3>
+            <form id="resolveForm" class="modal-form">
+                <label>解决人</label>
+                <input type="text" name="resolver" required placeholder="请输入解决人姓名">
+                <label style="margin-top: 0.75rem;">解决备注</label>
+                <textarea name="note" placeholder="请输入解决情况..."></textarea>
+            </form>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="hideModal('resolveModal')">取消</button>
+                <button class="btn btn-primary" onclick="submitResolve()">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="addCheckItemModal" class="modal-overlay">
+        <div class="modal">
+            <h3>添加检查项</h3>
+            <form id="addCheckItemForm" class="modal-form">
+                <label>检查项描述</label>
+                <input type="text" name="description" required placeholder="请输入检查项描述，如：清理通道杂物">
+            </form>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="hideModal('addCheckItemModal')">取消</button>
+                <button class="btn btn-primary" onclick="submitAddCheckItem()">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="completeCheckItemModal" class="modal-overlay">
+        <div class="modal">
+            <h3>标记检查项完成</h3>
+            <form id="completeCheckItemForm" class="modal-form">
+                <label>完成人</label>
+                <input type="text" name="completed_by" required placeholder="请输入您的姓名">
+                <label style="margin-top: 0.75rem;">完成照片（可选）</label>
+                <input type="file" name="photo" accept="image/*">
+            </form>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="hideModal('completeCheckItemModal')">取消</button>
+                <button class="btn btn-primary" onclick="submitCompleteCheckItem()">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="lightbox" class="lightbox-overlay" onclick="closeLightbox()">
+        <button class="lightbox-close" onclick="closeLightbox()">×</button>
+        <div class="lightbox-content" onclick="event.stopPropagation()">
+            <img id="lightboxImage" src="" alt="放大照片">
+        </div>
+    </div>
+
+    <script>
+        function showAssignModal() { document.getElementById('assignModal').classList.add('show'); }
+        function showProgressModal() { document.getElementById('progressModal').classList.add('show'); }
+        function showResolveModal() { document.getElementById('resolveModal').classList.add('show'); }
+        
+        function hideModal(id) { document.getElementById(id).classList.remove('show'); }
+
+        document.querySelector('input[name="progress"]').addEventListener('input', function(e) {
+            document.getElementById('progressValue').textContent = e.target.value + '%';
+        });
+
+        function submitAssign() {
+            const assignee = document.querySelector('#assignForm input[name="assignee"]').value;
+            fetch(`/risk/assign/{{ record.id }}`, {
+                method: 'POST',
+                body: new FormData(document.getElementById('assignForm'))
+            }).then(res => res.json()).then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    window.location.reload();
+                } else {
+                    alert(data.message);
+                }
+            });
+        }
+
+        function submitProgress() {
+            fetch(`/risk/update_progress/{{ record.id }}`, {
+                method: 'POST',
+                body: new FormData(document.getElementById('progressForm'))
+            }).then(res => res.json()).then(data => {
+                if (data.success) {
+                    alert('进度更新成功');
+                    window.location.reload();
+                } else {
+                    alert(data.message);
+                }
+            });
+        }
+
+        function submitResolve() {
+            fetch(`/risk/resolve/{{ record.id }}`, {
+                method: 'POST',
+                body: new FormData(document.getElementById('resolveForm'))
+            }).then(res => res.json()).then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    window.location.reload();
+                } else {
+                    alert(data.message);
+                }
+            });
+        }
+
+        function deleteRisk() {
+            if (confirm('确定要删除这条风险记录吗？')) {
+                fetch(`/risk/delete/{{ record.id }}`, { method: 'POST' })
+                    .then(res => res.json()).then(data => {
+                        if (data.success) {
+                            window.location.href = '/risk/list';
+                        } else {
+                            alert(data.message);
+                        }
+                    });
+            }
+        }
+
+        function openLightbox(src) {
+            document.getElementById('lightboxImage').src = src;
+            document.getElementById('lightbox').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeLightbox();
+            }
+        });
+
+        function showAddCheckItemModal() {
+            document.getElementById('addCheckItemModal').classList.add('show');
+        }
+
+        function showCompleteCheckItemModal(itemId) {
+            document.getElementById('completeCheckItemModal').classList.add('show');
+            document.getElementById('completeCheckItemModal').dataset.itemId = itemId;
+        }
+
+        function submitAddCheckItem() {
+            const description = document.querySelector('#addCheckItemForm input[name="description"]').value;
+            if (!description) {
+                alert('请输入检查项描述');
+                return;
+            }
+            fetch(`/risk/{{ record.id }}/check_item/add`, {
+                method: 'POST',
+                body: new FormData(document.getElementById('addCheckItemForm'))
+            }).then(res => res.json()).then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    window.location.reload();
+                } else {
+                    alert(data.message);
+                }
+            });
+        }
+
+        function submitCompleteCheckItem() {
+            const itemId = document.getElementById('completeCheckItemModal').dataset.itemId;
+            const formData = new FormData(document.getElementById('completeCheckItemForm'));
+            fetch(`/risk/{{ record.id }}/check_item/${itemId}/complete`, {
+                method: 'POST',
+                body: formData
+            }).then(res => res.json()).then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    window.location.reload();
+                } else {
+                    alert(data.message);
+                }
+            });
+        }
+
+        function submitAudit() {
+            const formData = new FormData(document.getElementById('submitAuditForm'));
+            fetch(`/risk/{{ record.id }}/submit_audit`, {
+                method: 'POST',
+                body: formData
+            }).then(res => res.json()).then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    window.location.reload();
+                } else {
+                    alert(data.message);
+                }
+            });
+        }
+
+        function showPhoto(src) {
+            document.getElementById('lightboxImage').src = src;
+            document.getElementById('lightbox').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+    </script>
+</body>
+</html>
